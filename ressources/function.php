@@ -689,7 +689,6 @@ function getSameSizeCity($cityCode, $marge, $nb) {
         $marge >= 1) {
         return null;
     }
-    $i = 0;
     $popMin = floor($info["population"] * (1 - $marge));
     $popMax = floor($info["population"] * (1 + $marge));
 
@@ -844,11 +843,9 @@ function login($pseudo, $pass) {
 // Update few informations about a city
 function updateCity($cityCode, $param) {
 // error
-    if (!count($param) == 7) {
+    if (!count($param) == 7 || !checkCity($cityCode)) {
         return false;
     }
-
-    if (!checkCity($cityCode)) return false;
 
 // update DB
     $sql = "UPDATE villes_france_free
@@ -878,7 +875,9 @@ function updateCity($cityCode, $param) {
 /* Add a picture for a city */
 
 function photoAjout($cityCode, $path, $title) {
-    if (!checkCity($cityCode)) return false;
+    if (!checkCity($cityCode)) {
+        return false;
+    }
 
 // add picture into DB
     $sql = "INSERT INTO villes_photos
@@ -1001,10 +1000,13 @@ function picByCityAndRank($cityCode, $pictureRang, $sens) {
     WHERE photo_ville = :ville ";
 
 // Check the previous rang
-    if ($sens) $sql .= "AND rang > :rang
-        ORDER BY rang ASC ";
-    else $sql .= "AND rang < :rang
-        ORDER BY rang DESC ";
+    if ($sens) {
+        $sql .= "AND rang > :rang"
+                . "ORDER BY rang ASC ";
+    } else {
+        $sql .= "AND rang < :rang "
+                . "ORDER BY rang DESC ";
+    }
     $sql .= "LIMIT 1";
 
     $response = $db->prepare($sql);
@@ -1031,7 +1033,9 @@ function picByCityAndRank($cityCode, $pictureRang, $sens) {
  * @return true si l'image a été modifié, false sinon
  */
 function updatePictureName($codePicture, $name) {
-    if (strlen($name) <= 0 || !checkPicture($codePicture)) return false;
+    if (strlen($name) <= 0 || !checkPicture($codePicture)) {
+        return false;
+    }
 
 // update DB
     $sql = "UPDATE villes_photos
