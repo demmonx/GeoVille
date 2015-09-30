@@ -1,0 +1,116 @@
+
+body {
+    background: #E6DBE3;
+    font-size: 12pt;
+    margin-left: 15px;
+    font-family: Verdana;
+}
+
+h1  {
+    font-size: 18pt;
+    color: #45303F;
+}
+h2 {
+    font-size: 15pt;
+    color: #45303F;
+    margin: 0px;
+}
+h3 {
+    font-size: 14pt;
+    color: #604358;
+}
+h4 {
+    font-size: 13pt;
+    color: #7B5671;
+}
+
+table.img-modif {
+    width: 60%;
+}
+table.img-modif td {
+    width: 45%;
+}
+#uploadFile {
+    width: 100%;
+}
+
+textarea {
+    resize: none;
+}
+
+
+td.titre {
+    width: 150px;
+}
+table.menu tr td a {
+    font-size: 13pt;
+    margin: 10px;
+}
+table.menu {
+    margin: 10px;
+}
+table td input {
+    width: 100px;
+}
+select {
+    width: 250px;
+}
+input[type="text"], input[type="password"] {
+    width: 350px;
+}
+
+button, input[type="submit"] {
+    width: 120px;
+    margin : 10px;
+}
+img {
+    max-width:150px;
+    margin: 10px;
+}
+td.action-pic {
+    text-align: left;
+}
+
+fieldset {
+    border: 1px solid grey;
+}
+
+fieldset legend {
+    font-weight: bold;
+}
+figure {
+    display: inline-block;
+    max-width: 150px;
+}
+div.spoil {
+    display: none;
+    margin-top: 10px;
+    padding: 5px;
+
+}
+div.spoil-accueil {
+    border: 1px solid grey;
+}
+a, a:visited {
+    color: #38514D;
+    text-decoration: none;
+}
+a:hover {
+    color: #9C3325;
+}
+textarea {
+    width: 40%;
+    height: 100px;
+}
+div.hidden {
+    display:none;
+}
+
+div.liste-pic {
+    margin-top: 30px;;
+}
+div.colonne {
+    vertical-align: top;
+    width: 45%;
+    float:left;
+}
