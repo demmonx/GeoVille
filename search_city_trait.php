@@ -2,7 +2,7 @@
 
 require_once ("ressources/function.php");
 // If valide data
-$nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
 $codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_VALIDATE_INT);
 $codeDep = filter_input(INPUT_POST, 'departement', FILTER_VALIDATE_REGEXP,
     array("options" => array("regexp" => getCodeDepartementRegex())));
