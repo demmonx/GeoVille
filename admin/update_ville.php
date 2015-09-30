@@ -41,7 +41,7 @@ if (!isset($city_informations) || count($city_informations) <= 0) {
             </tr>
             <tr>
                 <td class="titre">Code Postal :</td>
-                <td><input type="number" name="codePostal" id="codePostal" min=0
+                <td><input type="text" name="codePostal" id="codePostal" min=0
                            value="<?php echo $city_informations['postalCode']; ?>" /></td>
             </tr>
         </table>
@@ -52,7 +52,7 @@ if (!isset($city_informations) || count($city_informations) <= 0) {
         <table>
             <tr>
                 <td class="titre">Population :</td>
-                <td><input type="number" name="population" id="population" min=0
+                <td><input type="number" name="population" id="population" min=1
                            value="<?php echo $city_informations['population']; ?>" />
                     habitants</td>
             </tr>
@@ -70,7 +70,7 @@ if (!isset($city_informations) || count($city_informations) <= 0) {
             <tr>
                 <td class="titre">Superficie :</td>
                 <td><input type="number" name="superficie" id="superficie"
-                           step="any" min=0
+                           step="any" min=1
                            value="<?php echo $city_informations['superficie']; ?>" /> km²</td>
             </tr>
             <tr>
@@ -80,7 +80,7 @@ if (!isset($city_informations) || count($city_informations) <= 0) {
             </tr>
             <tr>
                 <td class="titre">Altitude maxi :</td>
-                <td><input type="number" name="altMax" id="altMax" min=0
+                <td><input type="number" name="altMax" id="altMax" min=1
                            value="<?php echo $city_informations['alt_max'] ?>" /> m</td>
             </tr>
             <tr>
