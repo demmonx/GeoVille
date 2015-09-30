@@ -514,22 +514,22 @@ function displayPhoto($list, $nb) {
             echo "<div class='spoil'>";
         }
 
-        // picture display
+// picture display
         echo "<figure><a href='" . $list[$z]['path'] . "'>";
         echo "<img src='" . $list[$z]['path'] . "' alt='" .
         $list[$z]['title'] . "' />";
         echo "<figcaption>" . $list[$z]['title'] . "</figcaption>";
         echo "</a></figure>";
 
-        // end of div
+// end of div
         if ($z == count($list) - 1) {
             echo "</div>";
         } else
         if ($z < 1 && count($list) > 1) { // spoiler
-            // command
+// command
             echo "<a href='#' class='spoiler'><button>Voir plus</button></a>";
         }
-        // Stopping the loop at 5 (5 images show)
+// Stopping the loop at 5 (5 images show)
         if ($z == $nb) {
             break;
         }
@@ -544,7 +544,7 @@ function displayPhoto($list, $nb) {
  */
 function displayCloseCityFromList($titre, $page, $closestCity) {
 
-    // title
+// title
     if (count($closestCity) > 0) {
         echo "<h2>" . $titre . "</h2>";
     }
@@ -553,18 +553,18 @@ function displayCloseCityFromList($titre, $page, $closestCity) {
     for ($region = 0; $region < count($closestCity); $region ++) {
         echo "<h3>" . $closestCity[$region][0][0]['nom_region'] . "</h3>";
 
-        // display the county
+// display the county
         for ($departement = 0; $departement < count($closestCity[$region]);
                 $departement ++) {
             echo "<h4>" . $closestCity[$region][$departement][0]['num_departement'];
             echo " - " . $closestCity[$region][$departement][0]['nom_departement'] .
             "</h4>";
 
-            // display the city
+// display the city
             for ($ville = 0; $ville < count($closestCity[$region][$departement]);
                     $ville ++) {
-                // Show the city and distance between this city and the current
-                // working city
+// Show the city and distance between this city and the current
+// working city
                 echo "<a href='" . $page . "?code=";
                 echo $closestCity[$region][$departement][$ville]['id_ville'];
                 echo "' >";
@@ -1467,4 +1467,52 @@ function getNumberCityFromADep($codeDep) {
     $response->bindValue(':dep', $codeDep, PDO::PARAM_INT);
     $response->execute();
     return substr($response->fetch()[0] + 1, -($codeDep < 100 ? 3 : 2));
+}
+
+/**
+ * Test de recherche plainText
+ * @param str $keyWord Le mot à rechercher
+ */
+function plainTextSearch($keyWord) {
+
+    $db = connexionBD();
+    $sql = "SELECT * "
+        . "FROM villes_france_free "
+        . "WHERE texte_vectorise @@ to_tsquery(:mot)";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':mot', generateSQLSearchRequest($keyWord), PDO::PARAM_STR);
+    try {
+        $stmt->execute();
+        while ($row = $stmt->fetch()) {
+            // do nothing
+            echo $row["ville_id"] . "<br>";
+        }
+        $stmt->closeCursor();
+    } catch (Exception $e) {
+        $e->getMessage();
+    }
+}
+
+function generateSQLSearchRequest($keyWord) {
+    // Découpe à tous les espaces
+    $tab = explode(' ', $keyWord);
+    $str = ''; // chaine de retour
+    $compt = 0; // Compteur d'occurence d'opérande
+    // On cherche la première chaine sans opérande
+    while ($compt < count($tab) && ($tab[$compt] == '|' || $tab[$compt] == '&')) {
+        $compt++;
+    }
+
+    // Parcours tous les éléments du tableau à partir de la première occurence valide
+    for ($i = $compt; $i < count($tab); $i++) {
+        // Si premier indice ou on a placé un opérateur avant, on met pas d'opérande
+        if ($i == $compt || ($i > 0 && ($tab[$i - 1] == '|' || $tab[$i - 1] == '&'))) {
+            $str .= $tab[$i];
+        } else { // ajoute une opérande si ce n''est pas une opérande, sinon met tel quel
+            $str .= $tab[$i] != '|' ? " & " . $tab[$i] : $tab[$i];
+        }
+    }
+    echo $str;
+    // Renvoie la chaine de requete
+    return $str;
 }
