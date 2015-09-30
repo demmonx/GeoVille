@@ -1002,10 +1002,10 @@ function picByCityAndRank($cityCode, $pictureRang, $sens) {
 // Check the previous rang
     if ($sens) {
         $sql .= "AND rang > :rang"
-                . "ORDER BY rang ASC ";
+                . " ORDER BY rang ASC ";
     } else {
         $sql .= "AND rang < :rang "
-                . "ORDER BY rang DESC ";
+                . " ORDER BY rang DESC ";
     }
     $sql .= "LIMIT 1";
 
