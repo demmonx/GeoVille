@@ -5,8 +5,8 @@ $titre = 'Connexion';
 //require_once("../ressources/header.php");
 require_once("../ressources/function.php");
 
-$pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_SPECIAL_CHARS);
+$pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_SPECIAL_CHARS);
 
 // Check form data
 if (!$pseudo || !$pass) {
