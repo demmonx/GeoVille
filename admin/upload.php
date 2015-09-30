@@ -9,7 +9,7 @@ if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
 }
 
 // If valide data
-$title = filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$title = filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_SPECIAL_CHARS);
 $code = filter_input(INPUT_POST, 'code', FILTER_VALIDATE_INT);
 $poids_max = 1000000; // Poids max de l'image en octets
 // Cas d'erreur
