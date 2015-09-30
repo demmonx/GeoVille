@@ -9,7 +9,7 @@ if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
 }
 
 // Check request data
-$nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
 $ville = filter_input(INPUT_POST, 'ville', FILTER_VALIDATE_INT,
     FILTER_REQUIRE_ARRAY);
 if (!$nom && $ville) {
