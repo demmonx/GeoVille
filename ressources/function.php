@@ -324,7 +324,7 @@ function getDescriptionFromDB($cityCode) {
 
     if ($response->rowCount() > 0) {
 // get description
-        $message = $response->fetch()['ville_description'];
+        $message = htmlspecialchars_decode($response->fetch()['ville_description'], ENT_QUOTES);
     }
 
     return $message;
@@ -861,7 +861,7 @@ function updateCity($cityCode, $param) {
     $stmt = $db->prepare($sql);
 
     $stmt->bindValue(':id', $cityCode, PDO::PARAM_INT);
-    $stmt->bindValue(':codePostal', $param[0], PDO::PARAM_INT);
+    $stmt->bindValue(':codePostal', $param[0], PDO::PARAM_STR);
     $stmt->bindValue(':population', $param[1], PDO::PARAM_INT);
     $stmt->bindValue(':densite', $param[3], PDO::PARAM_INT);
     $stmt->bindValue(':superficie', $param[2], PDO::PARAM_INT);
@@ -1165,21 +1165,20 @@ function getDepartementFromRegion($codeRegion) {
 function extractCityInfoFromARow($aRow) {
     return array(
         "code" => $aRow["ville_id"],
-        "nom" => $aRow["ville_nom"],
+        "nom" => htmlspecialchars_decode($aRow["ville_nom"]),
         "longitude" => $aRow["ville_longitude_deg"],
         "latitude" => $aRow["ville_latitude_deg"],
-        "ville" => $aRow["ville_nom"],
         "departement" => $aRow["nom"],
         "code_departement" => $aRow["num_departement"],
         "code_region" => $aRow["num_region"],
         "region" => $aRow["nom_r"],
-        "postalCode" => $aRow["ville_code_postal"],
+        "postalCode" => htmlspecialchars_decode($aRow["ville_code_postal"]),
         "population" => $aRow["ville_population_2010"],
         "densitePop" => $aRow["ville_densite_2010"],
         "superficie" => $aRow["ville_surface"],
         "alt_min" => $aRow["ville_zmin"],
         "alt_max" => $aRow["ville_zmax"],
-        "description" => nl2br($aRow["ville_description"])
+        "description" => nl2br(html_entity_decode($aRow["ville_description"]))
     );
 }
 
