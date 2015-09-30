@@ -8,7 +8,7 @@ if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
     exit("Vous devez vous connecter pour accéder à cette partie.");
 }
 // read data
-$codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_VALIDATE_INT);
+$codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $code = filter_input(INPUT_POST, 'code', FILTER_VALIDATE_INT);
 $population = filter_input(INPUT_POST, 'population', FILTER_VALIDATE_INT);
 $superficie = filter_input(INPUT_POST, 'superficie', FILTER_VALIDATE_FLOAT);
@@ -29,7 +29,7 @@ if (!$description) {
 $error = array();
 
 // check from error
-$error[0][0] = $codePostal > 0;
+$error[0][0] = $codePostal;
 $error[0][1] = "Le code postal est invalide.";
 $error[1][0] = $population > 0;
 $error[1][1] = "Le nombre d'habitants est invalide.";
