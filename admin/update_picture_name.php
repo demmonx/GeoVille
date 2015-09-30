@@ -9,7 +9,7 @@ if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
 }
 
 // check the name
-$name = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$name = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
 if (!$name) {
     exit("Titre invalide");
 } else
