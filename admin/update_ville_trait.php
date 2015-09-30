@@ -8,14 +8,14 @@ if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
     exit("Vous devez vous connecter pour accéder à cette partie.");
 }
 // read data
-$codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$codePostal = filter_input(INPUT_POST, 'codePostal');
 $code = filter_input(INPUT_POST, 'code', FILTER_VALIDATE_INT);
 $population = filter_input(INPUT_POST, 'population', FILTER_VALIDATE_INT);
 $superficie = filter_input(INPUT_POST, 'superficie', FILTER_VALIDATE_FLOAT);
 $altMin = filter_input(INPUT_POST, 'altMin', FILTER_VALIDATE_INT);
 $altMax = filter_input(INPUT_POST, 'altMax', FILTER_VALIDATE_INT);
 $description = filter_input(INPUT_POST, 'description',
-    FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    FILTER_SANITIZE_SPECIAL_CHARS);
 
 if (!$code || !$population || !$superficie || !isset($altMin) || !$altMax) {
     exit('Les champs doivent être remplis');
