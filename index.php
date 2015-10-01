@@ -2,7 +2,7 @@
 $titre = "Villes de France";
 $js = "index.js";
 require_once ("ressources/header.php");
-require_once ("ressources/function.php");
+require_once ("ressources/core.php");
 define("VILLE_PAR_DEP", 12);
 
 // Récupère la valeur passé en paramètre
