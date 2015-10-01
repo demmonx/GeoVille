@@ -16,11 +16,27 @@ echo "Bonjour <strong>" . $_SESSION['name'] . "</strong>";
 <a href="logout.php"><button>Déconnexion</button></a>
 <h1>Rechercher une ville</h1>
 <form id="search" action="search_ville_trait.php" method="post">
-    <input type="text" name="nom" id="nom" placeHolder="Nom" /> <input
-        type="number" name="codePostal" id="codePostal"
-        placeHolder="Code postal" /> <input type="number" name="departement"
-        id="departement" placeHolder="Département" /> <input type="submit"
-        value="Rechercher" />
+    <table>
+        <tr>
+            <td class="titre">Nom :</td>
+            <td><input type='text' name="nom" id="nom" /></td>
+        </tr>
+        <tr>
+            <td class="titre">Département :</td>
+            <td><select name="departement" id="departement">
+                    <?php
+                    $listeDep = getDepartement();
+                    displayInputOptionDepartement($listeDep);
+                    ?>
+                </select></td>
+        </tr>
+        <tr>
+            <td class="titre">Code Postal :</td>
+            <td><input type='number' id="codePostal" name="codePostal" /></td>
+        </tr>
+
+    </table>
+    <input type="submit" value="Rechercher" />
 </form>
 <div id="msgReturn"></div>
 </body>
