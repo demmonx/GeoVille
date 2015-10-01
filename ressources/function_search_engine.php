@@ -6,7 +6,6 @@
  * @return array La liste des idenfiants des villes correspondants à la requête
  */
 function plainTextSearch($keyWord) {
-
     $db = connexionBD();
     $sql = "SELECT ville_id "
             . "FROM villes_france_free "
@@ -53,7 +52,6 @@ function generateSQLSearchRequest($keyWord) {
             $str .= $tab[$i] != '|' ? " & " . $tab[$i] : $tab[$i];
         }
     }
-    echo $str;
     // Renvoie la chaine de requete
     return $str;
 }
@@ -67,10 +65,9 @@ function search($toSearch) {
     // Effectue une recherche de base pour commencer
     $resultat = basicSearch($toSearch);
     // si on trouve on renvoie les résultats
-    if ($resultat != null && count($resultat) > 0) {
+   if ($resultat != null && count($resultat) > 0) {
         return $resultat;
-    }
-
+     }
     // Si on trouve pas et qu'un nom est défini, recherche PlainText
     if (isset($toSearch["nom"])) {
         $idList = plainTextSearch($toSearch["nom"]);
@@ -89,5 +86,93 @@ function basicSearch($toSearch, $ville_id = null) {
     if ($toSearch == null) {
         return null;
     }
-    return null;
+    $returnArray = null;
+    $sql = getSqlSearchRequest($toSearch, $ville_id);
+    $db = connexionBD();
+    $stmt = $db->prepare($sql);
+    setSqlSearchRequestParam($toSearch, $stmt, $ville_id);
+    $stmt->execute();
+    if ($stmt->rowCount() > 0) {
+        $i = 0;
+        while ($row = $stmt->fetch()) {
+            $returnArray[$i++] = extractCityInfoFromARow($row);
+        }
+    }
+
+    return $returnArray;
+}
+
+function getSqlSearchRequest($toSearch, $ville_id = null) {
+    $sql = "SELECT *  
+           FROM villes_france_free V, departements D, regions R
+	   WHERE D.num_departement = V.ville_departement
+           AND ville_statut = 'A'
+	   AND R.num_region = D.num_region ";
+
+    // Génération de la requête SQL en fonction des paramètres valides ou pas
+    if ($toSearch["nom"] != null && $ville_id == null) {
+        $sql .= " AND ville_nom LIKE UPPER(:nom) ";
+    } else if ($toSearch["nom"] != null && $ville_id != null) {
+        $str = '';
+        for ($i = 0; $i < count($ville_id); $i++) {
+            $str .= ':ville' . $i;
+            if ($i + 1 != count($ville_id)) {
+                $str .= ",";
+            }
+        }
+        $sql .= " AND ville_id IN (" . $str . ")";
+    }
+    if ($toSearch["codePostal"] != null) {
+        $sql .= " AND ville_code_postal LIKE :cp";
+    }
+    if ($toSearch["code_departement"] != null) {
+        $sql .= " AND ville_departement = :dep";
+    }
+    if ($toSearch["code_region"] != null) {
+        $sql .= " AND R.num_region = :reg";
+    }
+    if ($toSearch["popMin"] != null && $toSearch["popMax"] == null) {
+        $sql .= " AND ville_population_2010 >= :popMin";
+    }
+    if ($toSearch["popMax"] != null && $toSearch["popMin"] == null) {
+        $sql .= " AND ville_population_2010 <= :popMax";
+    }
+    if ($toSearch["popMin"] != null && $toSearch["popMax"] != null) {
+        $sql .= " AND ville_population_2010 BETWEEN :popMin AND :popMax";
+    }
+
+    $sql .= " ORDER BY nom_r, num_departement, ville_nom";
+    return $sql;
+}
+
+function setSqlSearchRequestParam($toSearch, $stmt, $ville_id = null) {
+    // Génération de la requête SQL en fonction des paramètres valides ou pas
+    if ($toSearch["nom"] != null && $ville_id == null) {
+        $stmt->bindValue(':nom', "%" . $toSearch["nom"] . "%", PDO::PARAM_STR);
+    } else if ($toSearch["nom"] != null && $ville_id != null) {
+    // List les élements à passer en param
+        foreach ($ville_id as $k => $id) {
+            $stmt->bindValue(':ville' . $k, $id, PDO::PARAM_INT);
+        }
+    }
+    if ($toSearch["codePostal"] != null) {
+        $stmt->bindValue(':cp', "%" . $toSearch["codePostal"] . "%", PDO::PARAM_STR);
+    }
+    if ($toSearch["code_departement"] != null) {
+        $stmt->bindValue(':dep', $toSearch["code_departement"], PDO::PARAM_STR);
+    }
+    if ($toSearch["code_region"] != null) {
+        $stmt->bindValue(':reg', $toSearch["code_region"], PDO::PARAM_INT);
+    }
+    if ($toSearch["popMin"] != null && $toSearch["popMax"] == null) {
+        $stmt->bindValue(':popMin', $toSearch["popMin"], PDO::PARAM_INT);
+    }
+    if ($toSearch["popMax"] != null && $toSearch["popMin"] == null) {
+        $stmt->bindValue(':popMax', $toSearch["popMax"], PDO::PARAM_INT);
+    }
+    if ($toSearch["popMin"] != null && $toSearch["popMax"] != null) {
+        $stmt->bindValue(':popMin', $toSearch["popMin"], PDO::PARAM_INT);
+        $stmt->bindValue(':popMax', $toSearch["popMax"], PDO::PARAM_INT);
+    }
+    return $stmt;
 }
