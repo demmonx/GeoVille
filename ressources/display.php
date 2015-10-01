@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Affiche un nombre donné de photos par ville
+ * @param array $list Liste d'image et de descriptions à afficher
+ * @param int $nb Nombre de photos à afficher 
+ */
 function displayPhoto($list, $nb) {
     for ($z = 0; $z < count($list); $z ++) {
         if ($z == 1) { // show only 1 picture
@@ -113,35 +118,25 @@ function displayCityAsTable($title, $page, $listeCity) {
     if ($listeCity == null || count($listeCity) <= 0) {
         exit("Aucune ville à afficher");
     }
+    echo "<h2>" . $title . "</h2>";
     echo "<table id='table-sort' class='table table-striped table-bordered'>
     <thead>
     <tr>
-    <th>Ville</th>
-    <th>Département</th>
-    <th>Région</th>
-    <th>Code Postal</th>
-    <th>Population</th>
+    <th>Ville</th><th>Département</th><th>Région</th>
+    <th>Code Postal</th><th>Population</th>
     </tr>
     </thead>
     <tbody>";
     foreach ($listeCity as $row) {
 
-        echo "<tr>
-            <td>" . $row["ville_nom"] . "</td>
-            <td>" . $row["nom"] . "</td>
-            <td>" . $row["nom_r"] . "</td>
-            <td>" .
-        $row["ville_code_postal"] . "</td>
-            <td>" .
-        $row["ville_population_2012"] . "</td>
-            </tr>";
+        echo "<tr><td><a href='" . $page . "?code=" . $row["code"] . "'>"
+        . $row["ville_nom"] . "</a></td><td>" . $row["nom"] . "</td>"
+        . "<td>" . $row["nom_r"] . "</td><td>" . $row["ville_code_postal"]
+        . "</td> <td>" . $row["ville_population_2012"] . "</td> </tr>";
     }
     echo "</tbody>
 	</table>
-
-
 	<script type='text/javascript'>
-
 	$(document).ready( function () {
 	    $('#table-sort').DataTable( {
         'lengthMenu': [[35, 45, 50, -1], [35, 45, 50, 'All']]
@@ -183,6 +178,7 @@ function displayCityByColumn($list, $nb, $pattern) {
     }
     echo "</table>";
 }
+
 /**
  * Renvoie les départements sous forme d'options exploitables dans un select html
  * @param array $listeDep La liste des départements à afficher
