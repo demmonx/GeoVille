@@ -1,6 +1,6 @@
 <?php
 
-require_once("../ressources/db_connexion.php");
+require_once("db_connexion.php");
 
 /**
  * Test de recherche plainText
