@@ -1,6 +1,9 @@
 <?php
 
-require_once("db_connexion.php");
+// une déclaration conditionnelle n'est pas un effet secondaire
+if (!function_exists('bar')) {
+    require_once("db_connexion.php");
+}
 
 /**
  * Test de recherche plainText
