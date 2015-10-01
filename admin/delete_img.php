@@ -3,8 +3,6 @@
 session_start();
 require_once ("../ressources/core.php");
 
-$picture_info = null;
-
 // check picture ID
 $codePicture = filter_input(INPUT_GET, 'code', FILTER_VALIDATE_INT);
 if ($codePicture) {

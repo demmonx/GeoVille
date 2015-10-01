@@ -15,28 +15,7 @@ if (!isset($cities) || count($cities) <= 0) {
     exit("Aucune ville ne correspond à ce département</body></html>");
 } // else département ok
 
+$pattern = "<a href='ville.php?code={code}'>{nom}</a>";
 $cities = getCityFromDepartement($codeDep);
-echo "<table>";
+displayCityByColumn($cities, NB_COL, $pattern);
 
-// Génere le tableau résultat
-for ($z = 0; $z < count($cities); $z ++) {
-    if ($z % NB_COL == 0) {
-        echo "<tr>\n";
-    }
-    echo "\t<td><a href='ville.php?code=" . $cities[$z]["code"] . "'>" .
-    $cities[$z]["nom"] . "</a><td>\n";
-    if ($z % NB_COL == NB_COL - 1) {
-        echo "</tr>\n";
-    }
-}
-
-// On finit par mettre des cases propres à la fin
-$val = $z % NB_COL;
-while ($val > 0 && $val <= NB_COL) {
-    echo $val < NB_COL ? "\t<td></td>\n" : "</tr>\n";
-    $val ++;
-}
-echo "</table>";
-?>
-</body>
-</html>

@@ -21,24 +21,5 @@ if (!isset($cities) || count($cities) <= 0) {
     exit("Aucune ville ne correspond à ce département");
 } // else département ok
 echo "<h2>Sélectionner les villes à fusionner (maximum 6) :</h2>";
-echo "<table>";
-
-// Génere le tableau résultat
-for ($z = 0; $z < count($cities); $z ++) {
-    if ($z % NB_COL == 0) {
-        echo "<tr>\n";
-    }
-    echo "\t<td><input type='checkbox' name='ville[]' value='" . $cities[$z]["code"] . "' />\n " .
-    $cities[$z]["nom"] . "<td>\n";
-    if ($z % NB_COL == NB_COL - 1) {
-        echo "</tr>\n";
-    }
-}
-
-// On finit par mettre des cases propres à la fin
-$val = $z % NB_COL;
-while ($val > 0 && $val <= NB_COL) {
-    echo $val < NB_COL ? "\t<td></td>\n" : "</tr>\n";
-    $val ++;
-}
-echo "</table>";
+$pattern = "<input type='checkbox' name='ville[]' value='{code}' /> {nom}";
+displayCityByColumn($cities, NB_COL, $pattern);

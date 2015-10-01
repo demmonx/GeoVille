@@ -5,8 +5,7 @@ function wd_remove_accents($str, $charset = 'utf-8') {
     $str1 = htmlentities($str, ENT_NOQUOTES, $charset);
 
     $str2 = preg_replace(
-        '#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#',
-        '\1', $str1);
+            '#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str1);
     $str3 = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str2);
     $str4 = preg_replace('#&[^;]+;#', '', $str3); // supprime les autres
 // caractères
@@ -177,8 +176,8 @@ function getDOM($cityName) {
 // <=> Recherche avancée via moteur REGEX, then url conversion into String
 // (strip accents) to compare
     $search = @file_get_contents(
-            "http://en.wikipedia.org/w/api.php?action=opensearch&search=" .
-            $cityName . "&namespace=0");
+                    "http://en.wikipedia.org/w/api.php?action=opensearch&search=" .
+                    $cityName . "&namespace=0");
     if (!$search) {
         throw new Exception("Impossible d'accéder à Wiki"); // If URL is not
 // reachable
@@ -187,8 +186,7 @@ function getDOM($cityName) {
     for ($i = 0; $i < sizeof($url_search[3]); $i ++) {
 // Check url integrity
         if (preg_match(
-                "/^https:\/\/en.wikipedia.org\/wiki\/" . $cityName . "$/i",
-                wd_remove_accents(rawurldecode($url_search[3][$i])))) {
+                        "/^https:\/\/en.wikipedia.org\/wiki\/" . $cityName . "$/i", wd_remove_accents(rawurldecode($url_search[3][$i])))) {
             $page = $url_search[3][$i];
         }
     }
@@ -271,8 +269,7 @@ function getDescriptionFromWiki($cityName) {
 
 // Show first paragraph that contain the city
         if (preg_match(
-                "/" . $cityName . '|' . $tab['fin'] . '|' . $tab['debut'] . "/i",
-                $message)) {
+                        "/" . $cityName . '|' . $tab['fin'] . '|' . $tab['debut'] . "/i", $message)) {
             $message = preg_replace("/\[\d+\]/i", '', $message);
             break;
         }
@@ -332,7 +329,7 @@ function getPicturesFromWiki($cityName) {
 
 // Getting only image about the city (and not thing like blazon)
         if (preg_match("/" . $tab['debut'] . '|' . $tab['fin'] . "/i", $chemin) &&
-            !preg_match("/blason|plan|carte|logo/i", $chemin)) {
+                !preg_match("/blason|plan|carte|logo/i", $chemin)) {
             $desc = $image->getAttribute('alt');
 
 // Show specified image
@@ -453,8 +450,7 @@ function getCloseCityInfo($response, $latitude, $longitude, $distance) {
     $returnArray = array();
     while ($row = $response->fetch()) {
 
-        $size = distance($latitude, $longitude, $row["ville_latitude_deg"],
-            $row["ville_longitude_deg"]); // Get exact distance between city
+        $size = distance($latitude, $longitude, $row["ville_latitude_deg"], $row["ville_longitude_deg"]); // Get exact distance between city
         if ($size == 0 || $size > $distance) { // If distance is higher
             continue;
         }
@@ -488,7 +484,7 @@ function getCloseCityInfo($response, $latitude, $longitude, $distance) {
 function getCity($sqlRq) {
     $db = connexionBD();
 
-    $sql = "SELECT nom_r, num_departement, ville_departement, ville_id, ville_nom, nom
+    $sql = "SELECT *
 	            FROM villes_france_free V, departements D, regions R
 	            WHERE ville_departement = num_departement
 	            AND D.num_region = R.num_region
@@ -497,7 +493,6 @@ function getCity($sqlRq) {
     $sql .= ' ORDER BY nom_r, num_departement, ville_nom';
 
     $response = $db->query($sql);
-
     $returnArray = getCityListFromStatement($response);
 
 // close cursor
@@ -505,53 +500,66 @@ function getCity($sqlRq) {
     return $returnArray;
 }
 
-// Transforme un curseur de base de données en liste de ville exploitable
+// Convertit un curseur de base de données en tableau de ville
 function getCityListFromStatement($response) {
+    if ($response == null || $response->rowCount() <= 0) {
+        return null;
+    }
+
+    $returnArray = array();
+    $i = 0;
+    while ($row = $response->fetch()) {
+        $returnArray[$i] = extractCityInfoFromARow($row);
+    }
+    return $returnArray;
+}
+
+// Transforme un curseur de base de données en liste de ville exploitable
+function convertCityListToArray($list) {
     $returnArray = null;
     $dep_num = "00"; // Numero de département
     $reg_nom = null; // nom de region
     $region = 0; // Compteur de région
     $departement = 0; // Compteur de département pour la région
     $ville = 0; // Compteur de ville pour le département
-// Génère la liste
-    if ($response != null && $response->rowCount() > 0) {
-        while ($row = $response->fetch()) {
+    if ($list == null || count($list) <= 0) {
+        return false;
+    }
+
+    // Convertit la liste
+    foreach ($list as $row) {
 
 // Rank by region
-            if ($row["nom_r"] != $reg_nom) {
-                $reg_nom = $row["nom_r"];
-                $region ++;
-                $departement = 0;
-            }
+        if ($row["region"] != $reg_nom) {
+            $reg_nom = $row["region"];
+            $region ++;
+            $departement = 0;
+        }
 
 // And rank by county
-            if ($row["ville_departement"] != $dep_num) {
-                $dep_num = $row["ville_departement"];
-                $departement ++;
-                $ville = 0;
-            }
+        if ($row["code_departement"] != $dep_num) {
+            $dep_num = $row["code_departement"];
+            $departement ++;
+            $ville = 0;
+        }
 
 // Add item to return tab
-            $returnArray[$region - 1][$departement - 1][$ville]['nom_region'] = $row["nom_r"];
-            $returnArray[$region - 1][$departement - 1][$ville]['num_departement']
-                = $row["ville_departement"];
-            $returnArray[$region - 1][$departement - 1][$ville]['nom_departement']
-                = $row["nom"];
-            $returnArray[$region - 1][$departement - 1][$ville]['id_ville'] = $row["ville_id"];
-            $returnArray[$region - 1][$departement - 1][$ville]['nom_ville'] = $row["ville_nom"];
-            $ville ++;
-        }
+        $returnArray[$region - 1][$departement - 1][$ville]['nom_region'] = $row["region"];
+        $returnArray[$region - 1][$departement - 1][$ville]['num_departement'] = $row["code_departement"];
+        $returnArray[$region - 1][$departement - 1][$ville]['nom_departement'] = $row["departement"];
+        $returnArray[$region - 1][$departement - 1][$ville]['id_ville'] = $row["code"];
+        $returnArray[$region - 1][$departement - 1][$ville]['nom_ville'] = $row["nom"];
+        $ville ++;
     }
     return $returnArray;
 }
-
 
 // Retourne une liste de n villes comprises entre pop-marge et pop+marge
 function getSameSizeCity($cityCode, $marge, $nb) {
 // check city
     $info = getCityInfo($cityCode);
     if (count($info) <= 0 || $nb <= 0 || $marge < 0 ||
-        $marge >= 1) {
+            $marge >= 1) {
         return null;
     }
     $popMin = floor($info["population"] * (1 - $marge));
@@ -613,8 +621,7 @@ function getSameSizeCity($cityCode, $marge, $nb) {
     $response->bindValue(':popMin', $popMin, PDO::PARAM_INT);
     $response->bindValue(':popMax', $popMax, PDO::PARAM_INT);
     $response->bindValue(':number', $nb, PDO::PARAM_INT);
-    $response->bindValue(':departement', $info["code_departement"],
-        PDO::PARAM_INT);
+    $response->bindValue(':departement', $info["code_departement"], PDO::PARAM_INT);
     $response->bindValue(':id', $cityCode, PDO::PARAM_INT);
     $response->bindValue(':region', $info["code_region"], PDO::PARAM_INT);
 
@@ -626,7 +633,6 @@ function getSameSizeCity($cityCode, $marge, $nb) {
     $response->closeCursor();
     return $returnArray;
 }
-
 
 // Check if the people exist in DB or not and if he's log is correct
 function login($pseudo, $pass) {
@@ -1160,9 +1166,9 @@ function mergeCity($name, $list) {
  */
 function insertNewCity($info, $db) {
     $sql = "INSERT INTO villes_france_free"
-        . "(ville_code_commune, ville_nom, ville_longitude_deg, ville_latitude_deg, ville_departement, ville_zmin, ville_zmax,"
-        . " ville_population_2010, ville_surface, ville_densite_2010, ville_code_postal, ville_statut, ville_id) "
-        . "VALUES(:commune, :nom, :longitude, :latitude, :departement, :zmin, :zmax, :pop, :surface, :densite, :cp, :statut, (SELECT MAX(ville_id)+1 FROM villes_france_free))";
+            . "(ville_code_commune, ville_nom, ville_longitude_deg, ville_latitude_deg, ville_departement, ville_zmin, ville_zmax,"
+            . " ville_population_2010, ville_surface, ville_densite_2010, ville_code_postal, ville_statut, ville_id) "
+            . "VALUES(:commune, :nom, :longitude, :latitude, :departement, :zmin, :zmax, :pop, :surface, :densite, :cp, :statut, (SELECT MAX(ville_id)+1 FROM villes_france_free))";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(":commune", $info["codeCommune"], PDO::PARAM_STR);
     $stmt->bindValue(":nom", $info["nom"], PDO::PARAM_STR);
@@ -1216,11 +1222,11 @@ function deleteOldCity($list, $codeNew, $db) {
 
 // Ajout des communes dans la table d'archivage
     $sql2 = "INSERT INTO ville_archive (source, cible, date_fusion) "
-        . "VALUES (:oldCity, ("
-        . "SELECT ville_id "
-        . "FROM villes_france_free "
-        . "WHERE ville_code_commune = :newCity)"
-        . ", NOW())";
+            . "VALUES (:oldCity, ("
+            . "SELECT ville_id "
+            . "FROM villes_france_free "
+            . "WHERE ville_code_commune = :newCity)"
+            . ", NOW())";
     $response = $db->prepare($sql1);
     $response2 = $db->prepare($sql2);
     $response2->bindValue(':newCity', $codeNew, PDO::PARAM_INT);
