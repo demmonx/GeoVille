@@ -191,7 +191,7 @@ function displayCityByColumn($list, $nb, $pattern) {
 function displayInputOptionDepartement($listeDep, $default = null) {
     // Generate the list
     if ($listeDep != null && count($listeDep) > 0) {
-        echo "\t<option selected>Choisir un département</option>\n";
+        echo "\t<option value='0' selected>Choisir un département</option>\n";
         foreach ($listeDep as $dep) {
             echo "\t<option " . ($dep['code'] == $default ? "selected" : "") .
             " value='" . $dep["code"] . "'>" . $dep["code"] . " - " . $dep['nom'] . "</option>\n";
@@ -209,7 +209,7 @@ function displayInputOptionDepartement($listeDep, $default = null) {
 function displayInputOptionRegion($listeReg, $default = null) {
     // Generate the list
     if ($listeReg != null && count($listeReg) > 0) {
-        echo "\t<option selected>Choisir une région</option>\n";
+        echo "\t<option value='0' selected>Choisir une région</option>\n";
         foreach ($listeReg as $reg) {
             echo "\t<option " . ($reg['code'] == $default ? "selected" : "") .
             " value='" . $reg["code"] . "'>" . $reg['nom'] . "</option>\n";

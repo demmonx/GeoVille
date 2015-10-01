@@ -13,7 +13,6 @@ require_once ("ressources/core.php");
         <tr>
             <td class="titre">Region :</td>
             <td><select name="region" id="region">
-                    <option></option>
                     <?php
                     $listeReg = getRegion();
                     displayInputOptionRegion($listeReg);
@@ -23,7 +22,6 @@ require_once ("ressources/core.php");
         <tr>
             <td class="titre">Département :</td>
             <td><select name="departement" id="departement">
-                    <option></option>
                     <?php
                     $listeDep = getDepartement();
                     displayInputOptionDepartement($listeDep);
