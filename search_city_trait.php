@@ -41,34 +41,6 @@ $aChercher = array(
     "popMin" => $popMin,
     "popMax" => $popMax
 );
-// partial request
-$sql = "";
-
-// to do research with invalid or empty data
-// store data -> add request fragment
-//if ($nom) {
-//    $sql .= " AND ville_nom LIKE UPPER('%" . strtoupper($nom) . "%') ";
-//    //  $sql .= " AND to_tsvector('ville_nom')  @@ to_tsquery('" . strtoupper($nom) . "')";
-//}
-//if ($codePostal) {
-//    $sql .= " AND ville_code_postal LIKE '%" . $codePostal . "%'";
-//}
-//if ($codeDep) {
-//    $sql .= " AND ville_departement = '" . $codeDep . "'";
-//}
-//if ($codeReg) {
-//    $sql .= " AND R.num_region = '" . $codeReg . "'";
-//}
-//if ($popMin && !$popMax) {
-//    $sql .= " AND ville_population_2010 >= " . $popMin;
-//}
-//if ($popMax && !$popMin) {
-//    $sql .= " AND ville_population_2010 <= " . $popMax;
-//}
-//if (isset($popValide) && $popValide) {
-//    $sql .= " AND ville_population_2010 BETWEEN " . $popMin .
-//        " AND " . $popMax;
-//}
 // search and display
 $title = "Résultats de la recherche :";
 $page = "ville.php";
