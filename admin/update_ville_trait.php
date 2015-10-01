@@ -8,7 +8,7 @@ if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
     exit("Vous devez vous connecter pour accéder à cette partie.");
 }
 // read data
-$codePostal = filter_input(INPUT_POST, 'codePostal');
+$codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_SANITIZE_SPECIAL_CHARS);
 $code = filter_input(INPUT_POST, 'code', FILTER_VALIDATE_INT);
 $population = filter_input(INPUT_POST, 'population', FILTER_VALIDATE_INT);
 $superficie = filter_input(INPUT_POST, 'superficie', FILTER_VALIDATE_FLOAT);
