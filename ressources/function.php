@@ -621,7 +621,7 @@ function getSameSizeCity($cityCode, $marge, $nb) {
     $response->bindValue(':popMin', $popMin, PDO::PARAM_INT);
     $response->bindValue(':popMax', $popMax, PDO::PARAM_INT);
     $response->bindValue(':number', $nb, PDO::PARAM_INT);
-    $response->bindValue(':departement', $info["code_departement"], PDO::PARAM_INT);
+    $response->bindValue(':departement', $info["code_departement"], PDO::PARAM_STR);
     $response->bindValue(':id', $cityCode, PDO::PARAM_INT);
     $response->bindValue(':region', $info["code_region"], PDO::PARAM_INT);
 
@@ -882,7 +882,7 @@ function getDepartementInfo($codeDep) {
     $response = $db->prepare($sql);
 
 // Change ? into the correct value
-    $response->bindValue(':departement', $codeDep, PDO::PARAM_INT);
+    $response->bindValue(':departement', $codeDep, PDO::PARAM_STR);
 
     $response->execute();
 
@@ -921,7 +921,7 @@ function getBiggestCityOfDep($codeDep, $nb) {
     $response = $db->prepare($sql);
 
 // Change ? into the correct value
-    $response->bindValue(':departement', $codeDep, PDO::PARAM_INT);
+    $response->bindValue(':departement', $codeDep, PDO::PARAM_STR);
     $response->bindValue(':nombre', $nb, PDO::PARAM_INT);
 
     $response->execute();
@@ -1016,7 +1016,7 @@ function getCityFromDepartement($codeDep) {
     $response = $db->prepare($sql);
 
 // Change ? into the correct value
-    $response->bindValue(':departement', $codeDep, PDO::PARAM_INT);
+    $response->bindValue(':departement', $codeDep, PDO::PARAM_STR);
 
     $response->execute();
 
@@ -1283,7 +1283,7 @@ function getNumberCityFromADep($codeDep) {
     $sql = "SELECT MAX(ville_code_commune) FROM villes_france_free WHERE ville_departement = :dep";
     $db = connexionBD();
     $response = $db->prepare($sql);
-    $response->bindValue(':dep', $codeDep, PDO::PARAM_INT);
+    $response->bindValue(':dep', $codeDep, PDO::PARAM_STR);
     $response->execute();
     return substr($response->fetch()[0] + 1, -($codeDep < 100 ? 3 : 2));
 }

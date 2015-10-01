@@ -11,7 +11,7 @@ require_once ("ressources/core.php");
             <td><input type='text' name="nom" id="nom" /></td>
         </tr>
         <tr>
-            <td class="titre">Region :</td>
+            <td class="titre">Région :</td>
             <td><select name="region" id="region">
                     <?php
                     $listeReg = getRegion();

@@ -6,7 +6,7 @@ $(document).ready(function () {
 
         var nom = $('#nom').val();  // Valeur du champ nom
         var cp = $('#codePostal').val();  // valeur du champ code postal
-        var dep = $('#departement').val();  // valeur du champ code postal
+        var dep = $('#departement').val() > 0 ? $('#departement').val() : null;
         $('#msgReturn').empty();
         // Vérifie pour éviter de lancer une requête fausse
         if (nom === '' && cp === '' && dep === '') {
@@ -23,7 +23,6 @@ $(document).ready(function () {
                 data: form.serialize(), // Envoie de toutes les données
                 success: function (html) { // Récupération de la réponse
                     $('#msgReturn').append(html);  // affichage du résultat
-                    form.get(0).reset();
                 }
             });
         }

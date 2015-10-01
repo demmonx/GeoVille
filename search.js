@@ -20,9 +20,9 @@ $(document).ready(function () {
             $('#msgReturn').append('Le format du code département est invalide');
         } else if (reg !== '' && isNaN(reg)) {
             $('#msgReturn').append('Le format du code région est invalide');
-        } else if (popMin !== '' && (isNaN(dep) || popMin < 0)) {
+        } else if (popMin !== '' && (isNaN(popMin) || popMin < 0)) {
             $('#msgReturn').append('La valeur de la population minimale est invalide');
-        } else if (popMax !== '' && (isNaN(dep) || popMax < 0)) {
+        } else if (popMax !== '' && (isNaN(popMax) || popMax < 0)) {
             $('#msgReturn').append('La valeur de la population maximale est invalide');
         } else if (popMax !== '' && popMin !== '' && popMax < popMin) {
             $('#msgReturn').append("La valeur de la population maximale doit être "

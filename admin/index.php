@@ -3,6 +3,7 @@ session_start();
 $titre = 'Chercher une ville';
 $js = "search_ville.js";
 require_once ("../ressources/header.php");
+require_once ("../ressources/core.php");
 
 // If user isn't logged
 if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
