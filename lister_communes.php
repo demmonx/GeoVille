@@ -1,7 +1,7 @@
 <?php
 $titre = "Villes de France";
 require_once ("ressources/header.php");
-require_once ("ressources/function.php");
+require_once ("ressources/core.php");
 define("NB_COL", 4);
 $codeDep = filter_input(INPUT_GET, 'code', FILTER_VALIDATE_REGEXP,
     array("options" => array("regexp" => getCodeDepartementRegex())));
