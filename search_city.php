@@ -16,11 +16,8 @@ require_once ("ressources/core.php");
                     <option></option>
                     <?php
                     $listeReg = getRegion();
-                    foreach ($listeReg as $reg) {
-                        echo "<option value='" . $reg["code"] . "'>" . $reg['nom'] .
-                        "</option>\n";
-                    }
-                    ?>
+                    displayInputOptionRegion($listeReg);
+?>
                 </select></td>
         </tr>
         <tr>
@@ -29,11 +26,8 @@ require_once ("ressources/core.php");
                     <option></option>
                     <?php
                     $listeDep = getDepartement();
-                    foreach ($listeDep as $dep) {
-                        echo "<option value='" . $dep["code"] . "'>" . $dep['nom'] .
-                        "</option>\n";
-                    }
-                    ?>
+                    displayInputOptionDepartement($listeDep);
+?>
                 </select></td>
         </tr>
         <tr>

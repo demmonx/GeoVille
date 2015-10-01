@@ -18,10 +18,7 @@ if ($region) {
 // Selecteur pour la région à afficher
 echo "Choisir une région : <select id='region_choix'>";
 $listeRegion = getRegion();
-foreach ($listeRegion as $reg) {
-    echo "\t<option " . ($reg['code'] == $region["code"] ? "selected" : "") .
-    " value='" . $reg["code"] . "'>" . $reg['nom'] . "</option>\n";
-}
+displayInputOptionRegion($listeRegion, $region["code"]);
 echo "</select>\n";
 echo "<a href='search_city.php'><button>Recherche</button></a>\n";
 

@@ -18,10 +18,7 @@ echo "<h1>Fusionner des communes</h1>";
 // Selecteur pour le département à afficher
 echo "Choisir un département : <select id='departement'>";
 $listeDep = getDepartement();
-echo "<option></option>";
-foreach ($listeDep as $dep) {
-    echo "<option value='" . $dep["code"] . "'>" . $dep["code"] . " - " . $dep['nom'] . "</option>\n";
-}
+displayInputOptionDepartement($listeDep);
 echo "</select>";
 ?>
 <form action="fusion_ville_traitement.php" method="post" id="fusion-commune">
