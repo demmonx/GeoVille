@@ -1,6 +1,6 @@
 <?php
 
-require_once ("ressources/function.php");
+require_once ("ressources/core.php");
 // Récupère la valeur passé en paramètre
 $codeDep = filter_input(INPUT_GET, 'code', FILTER_VALIDATE_INT);
 if ($codeDep) {
