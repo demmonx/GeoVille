@@ -11,7 +11,7 @@ if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
 
 // If valide data
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
-$codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_VALIDATE_INT);
+$codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_SANITIZE_SPECIAL_CHARS);
 $codeDep = filter_input(INPUT_POST, 'departement', FILTER_VALIDATE_REGEXP,
     array("options" => array("regexp" => getCodeDepartementRegex())));
 
@@ -20,23 +20,17 @@ if (!$nom && !$codePostal && !$codeDep) {
     exit("Au moins un des champs doit être rempli");
 }
 
-// partial request
-$sql = "";
+$aChercher = array(
+    "nom" => $nom,
+    "codePostal" => $codePostal,
+    "code_departement" => $codeDep
+);
 
-// to do research with invalid or empty data
-// store data -> add request fragment
-if ($nom) {
-    $sql .= " AND ville_nom LIKE UPPER('%" . strtoupper($nom) . "%') ";
-}
-if ($codePostal) {
-    $sql .= " AND ville_code_postal LIKE '%" . $codePostal . "%'";
-}
-if ($codeDep) {
-    $sql .= " AND ville_departement = '" . $codeDep . "'";
-}
 // search and display
 $title = "Résultats de la recherche :";
 $page = "update_ville.php";
 
-displayCityBySQL($title, $page, $sql);
+$cities = search($aChercher);
+
+displayCity($title, $page, $cities);
 
