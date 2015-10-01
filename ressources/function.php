@@ -1,29 +1,5 @@
 <?php
-require_once("../ressources/db_connexion.php");
-
-// Connexion à la base de donnée (PDO)
-function connexionBD() {
-    try {
-        $db = new PDO('pgsql:host=localhost;dbname=geo', "visiteur",
-            "jevisite/*78");
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo 'Échec lors de la connexion : ' . $e->getMessage();
-    }
-    return $db;
-}
-
-// Connexion à la base de donnée (PDO)
-function connexionBDAdmin() {
-    try {
-        $db = new PDO('pgsql:host=localhost;dbname=geo', "gerant",
-            "jesuislechef%*89");
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo 'Échec lors de la connexion : ' . $e->getMessage();
-    }
-    return $db;
-}
+require_once("db_connexion.php");
 
 // Supprime les accentes d'une chaine de caractère
 function wd_remove_accents($str, $charset = 'utf-8') {
