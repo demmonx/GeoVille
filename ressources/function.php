@@ -1,5 +1,4 @@
 <?php
-require_once("db_connexion.php");
 
 // Supprime les accentes d'une chaine de caractère
 function wd_remove_accents($str, $charset = 'utf-8') {
