@@ -1,6 +1,7 @@
 <?php
 
 require_once ("ressources/function.php");
+require_once ("ressources/function_display.php");
 // If valide data
 $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
 $codePostal = filter_input(INPUT_POST, 'codePostal', FILTER_VALIDATE_INT);
