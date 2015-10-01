@@ -1,7 +1,7 @@
 <?php
 
 @session_start();
-require_once ("../ressources/function.php");
+require_once ("../ressources/core.php");
 
 // If user isn't logged
 if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
@@ -46,14 +46,16 @@ for ($z = 0; $z < count($imageAboutThisCity); $z ++) {
             </a></figure></td><td class='action-pic'><a class='delete-pic' href='delete_img.php?code=" .
     $imageAboutThisCity[$z]['id'] . "'>
                      <button>Supprimer</button></a></td></tr>";
-    if ($z > 0)
-            echo "<tr><td class='action-pic'><a class='sens-edit' href='change_image_rang.php?code=" .
+    if ($z > 0) {
+        echo "<tr><td class='action-pic'><a class='sens-edit' href='change_image_rang.php?code=" .
         $imageAboutThisCity[$z]['id'] .
         "&sens=1'><button>Monter</button></a></td></tr>";
-    if ($z < count($imageAboutThisCity) - 1)
-            echo "<tr><td class='action-pic'><a class='sens-edit' href='change_image_rang.php?code=" .
+    }
+    if ($z < count($imageAboutThisCity) - 1) {
+        echo "<tr><td class='action-pic'><a class='sens-edit' href='change_image_rang.php?code=" .
         $imageAboutThisCity[$z]['id'] .
         "&sens=0'><button>Descendre</button></a></td></tr>";
+    }
     echo '</table></form></div>';
 }
 

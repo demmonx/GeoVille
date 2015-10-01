@@ -3,7 +3,7 @@ session_start();
 $titre = 'Modification des photos';
 $js = "photo_update.js";
 require_once ("../ressources/header.php");
-require_once ("../ressources/function.php");
+require_once ("../ressources/core.php");
 
 $city_informations = null;
 

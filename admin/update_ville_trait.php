@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once("../ressources/function.php");
+require_once("../ressources/core.php");
 
 // if user is not logged
 if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {

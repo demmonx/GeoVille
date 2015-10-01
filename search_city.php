@@ -2,7 +2,7 @@
 $titre = "Rechercher une commune";
 $js = "search.js";
 require_once ("ressources/header.php");
-require_once ("ressources/function.php");
+require_once ("ressources/core.php");
 ?>
 <form method='post' action='search_city_trait.php' id='search'>
     <table>

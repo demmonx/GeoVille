@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once ("../ressources/function.php");
+require_once ("../ressources/core.php");
 
 $picture_info = null;
 
@@ -14,24 +14,17 @@ if (!(isset($picture_info) && count($picture_info) > 0)) {
     exit("<p class='error'>Pas de photos pour la ville</p>");
 }
 
-// If user is logged
-if (isset($_SESSION['name']) && $_SESSION['name'] != null) {
-    // remove file if exist
-    if (file_exists($picture_info['path'])) {
-        unlink($picture_info['path']);
-        // remove file like in BD
-        if (removePictureFromBD($codePicture)) {
-            echo "Suppression réussie";
-        } else {
-            echo "Echec de suppression";
-        }
-    } else {
-        echo "Fichier absent";
-    }
-} else {
-    echo "<p>Vous devez vous connecter pour accéder à cette partie.<br />";
-    echo "Vous serez redirigé automatiquement vers la page de connexion dans 5 secondes.<br />";
-    echo "[ <a href='login.php'>Se connecter</a> ]</p>";
-    header("refresh:5;url=login.php");
+// If user isn't logged
+if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
+    exit("<p>Vous devez vous connecter pour accéder à cette partie.<br />");
 }
-?>
+// if file doesn't exist
+if (!file_exists($picture_info['path'])) {
+    exit("Fichier absent");
+}
+
+//remove file
+unlink($picture_info['path']);
+
+// remove file in BD
+removePictureFromBD($codePicture) ? "Suppression réussie" : "Echec de suppression";

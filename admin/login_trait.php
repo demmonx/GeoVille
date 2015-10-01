@@ -3,7 +3,7 @@
 session_start();
 $titre = 'Connexion';
 //require_once("../ressources/header.php");
-require_once("../ressources/function.php");
+require_once("../ressources/core.php");
 
 $pseudo = filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_SPECIAL_CHARS);
 $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_SPECIAL_CHARS);

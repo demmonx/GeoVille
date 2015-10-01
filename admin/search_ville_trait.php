@@ -2,8 +2,7 @@
 
 session_start();
 $titre = 'Chercher une ville';
-require_once ("../ressources/function.php");
-require_once ("../ressources/function_display.php");
+require_once ("../ressources/core.php");
 
 // if user is logged
 if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {

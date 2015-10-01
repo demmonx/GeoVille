@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once ("../ressources/function.php");
+require_once ("../ressources/core.php");
 
 // Check sens
 $sens = filter_input(INPUT_GET, 'sens', FILTER_VALIDATE_BOOLEAN,
@@ -16,8 +16,9 @@ if ($codePicture) {
     $picture_info = getPictureInfo($codePicture);
 }
 
-if (!(isset($picture_info) && count($picture_info) > 0))
-        exit("<p class='error'>Pas de photos pour la ville</p>");
+if (!(isset($picture_info) && count($picture_info) > 0)) {
+    exit("<p class='error'>Pas de photos pour la ville</p>");
+}
 
 // If user isn't logged
 if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {

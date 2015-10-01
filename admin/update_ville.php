@@ -3,7 +3,7 @@ session_start();
 $titre = 'Modifier une ville';
 $js = 'update_ville.js';
 require_once ("../ressources/header.php");
-require_once ("../ressources/function.php");
+require_once ("../ressources/core.php");
 
 $ville = null;
 $city_informations = null;

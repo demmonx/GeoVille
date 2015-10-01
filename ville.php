@@ -2,8 +2,7 @@
 <body>
     <?php
 //important des functions
-    require_once ("ressources/function.php");
-    require_once ("ressources/function_display.php");
+    require_once ("ressources/core.php");
     define("DISTANCE", 10); // Distance entre deux villes proches
     define("NB_IMAGE", 5); // Nombre d'images maxi à afficher
     define("MARGE_POP", 0.2); // Marge à partir de laquelle on considère une ville

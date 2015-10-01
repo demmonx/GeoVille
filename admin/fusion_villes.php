@@ -3,7 +3,7 @@ session_start();
 $titre = 'Fusion de communes';
 $js = "fusion_villes.js";
 require_once ("../ressources/header.php");
-require_once ("../ressources/function.php");
+require_once ("../ressources/core.php");
 
 // if user is not logged
 if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
