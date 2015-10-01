@@ -3,8 +3,8 @@
     <?php
 //important des functions
     require_once ("ressources/function.php");
-require_once ("ressources/display.php");
-define("DISTANCE", 10); // Distance entre deux villes proches
+    require_once ("ressources/display.php");
+    define("DISTANCE", 10); // Distance entre deux villes proches
     define("NB_IMAGE", 5); // Nombre d'images maxi à afficher
     define("MARGE_POP", 0.2); // Marge à partir de laquelle on considère une ville
     // comme voisine
@@ -16,8 +16,7 @@ define("DISTANCE", 10); // Distance entre deux villes proches
     }
 
     // Get the name
-    $titre = isset($city_informations) && count($city_informations) > 0 ? $city_informations['nom']
-            : "Ville inconnue";
+    $titre = isset($city_informations) && count($city_informations) > 0 ? $city_informations['nom'] : "Ville inconnue";
     require_once ("ressources/header.php");
 
     if (!isset($city_informations) || count($city_informations) <= 0) {
@@ -84,36 +83,33 @@ define("DISTANCE", 10); // Distance entre deux villes proches
             </table>
         </fieldset>
     </form>
-<?php
-$msg = getCityDescription($city_informations['nom'], $ville_id);
-if (strlen($msg) > 0) {
-    echo "<h2> Description : </h2><p>" . $msg . "</p>";
-}
+    <?php
+    $msg = getCityDescription($city_informations['nom'], $ville_id);
+    if (strlen($msg) > 0) {
+        echo "<h2> Description : </h2><p>" . $msg . "</p>";
+    }
 
-$imageAboutThisCity = getCityPhotos($city_informations['nom'], $ville_id);
-if (count($imageAboutThisCity) > 0) {
-    echo "<h2>Photo(s) :</h2>";
-}
-displayPhoto($imageAboutThisCity, NB_IMAGE);
+    $imageAboutThisCity = getCityPhotos($city_informations['nom'], $ville_id);
+    if (count($imageAboutThisCity) > 0) {
+        echo "<h2>Photo(s) :</h2>";
+    }
+    displayPhoto($imageAboutThisCity, NB_IMAGE);
 
 
-echo "<div class='deux-colonnes'>";
+    echo "<div class='deux-colonnes'>";
 // List closest city
-$closestCity = getCloseCity($city_informations['latitude'],
-    $city_informations['longitude'], $ville_id, DISTANCE);
-if (count($closestCity) > 0) {
-    echo "<div class='colonne'>";
-    displayCloseCityFromList("Villes voisines à moins de " . DISTANCE . " km",
-        "ville.php", $closestCity);
-    echo "</div>";
-}
+    $closestCity = getCloseCity($city_informations['latitude'], $city_informations['longitude'], $ville_id, DISTANCE);
+    if (count($closestCity) > 0) {
+        echo "<div class='colonne'>";
+        displayCloseCityFromList("Villes voisines à moins de " . DISTANCE . " km", "ville.php", $closestCity);
+        echo "</div>";
+    }
 
-echo "<div class='colonne'>";
-displayCity("Villes de même taille", "ville.php",
-    getSameSizeCity($ville_id, MARGE_POP, NB_VILLE));
-echo "</div>";
-echo "</div>"
-?>
+    echo "<div class='colonne'>";
+    displayCity("Villes de même taille", "ville.php", getSameSizeCity($ville_id, MARGE_POP, NB_VILLE));
+    echo "</div>";
+    echo "</div>"
+    ?>
 
     <!-- On appelle la fonction spoiler ici, sinon elle ne trouve pas le s éléments -->
     <script t     ype="text/javascript">
