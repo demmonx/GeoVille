@@ -24,7 +24,7 @@ $(document).ready(function () {
             $('#msgReturn').append('La valeur de la population minimale est invalide');
         } else if (popMax !== '' && (isNaN(popMax) || popMax < 0)) {
             $('#msgReturn').append('La valeur de la population maximale est invalide');
-        } else if (popMax !== '' && popMin !== '' && popMax < popMin) {
+        } else if (popMax !== '' && popMin !== '' && popMax - popMin < 0) {
             $('#msgReturn').append("La valeur de la population maximale doit être "
                     + "supérieure à celle de la population minimale");
         } else {
