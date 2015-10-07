@@ -412,7 +412,7 @@ function getCloseCity($latitude, $longitude, $cityCode, $distance) {
 
     $db = connexionBD();
 
-    $sql = "SELECT nom_r, num_departement, ville_departement, ville_id, ville_nom, nom, ville_latitude_deg, ville_longitude_deg
+    $sql = "SELECT *
 		FROM villes_france_free V, departements D, regions R
 		WHERE ville_id <> ?
                                     AND ville_statut = 'A'
