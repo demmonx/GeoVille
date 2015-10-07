@@ -42,39 +42,6 @@ function getCodeDepartementRegex() {
 
 
 
-// Coupe le nom de la ville pour récupérer le début et la fin
-// Permet de faire des comparaisons avec des REGEX
-function cutCityName($cityName) {
-    $ok = false;
-
-    $fin = $cityName;
-    $debut = $cityName;
-
-// Coupe au niveau des ''', des ' ' et des '-' pour rechercher dans l'url de
-// l'image
-    while (!$ok) {
-        if (0 < strrpos($fin, "'") || 0 < strrpos($debut, "'")) {
-            $fin = substr($fin, strrpos($fin, "'") + 1, strlen($fin));
-            $debut = substr($debut, 0, strrpos($debut, "'"));
-        } else
-        if (0 < strrpos($fin, "-") || 0 < strrpos($debut, "-")) {
-            $fin = substr($fin, strrpos($fin, "-") + 1, strlen($fin));
-            $debut = substr($debut, 0, strrpos($debut, "-"));
-        } else
-        if (0 < strrpos($fin, " ") || 0 < strrpos($debut, " ")) {
-            $fin = substr($fin, strrpos($fin, " ") + 1, strlen($fin));
-            $debut = substr($debut, 0, strrpos($debut, " "));
-        } else {
-            $ok = true;
-        }
-    }
-
-// Retour des deux variables
-    $tab['debut'] = $debut;
-    $tab['fin'] = $fin;
-    return $tab;
-}
-
 
 // Return a short description about the city from database
 function getDescriptionFromDB($cityCode) {
@@ -510,9 +477,9 @@ function extractCityInfoFromARow($aRow) {
         "code_departement" => $aRow["num_departement"],
         "code_region" => $aRow["num_region"],
         "region" => $aRow["nom_r"],
-        "postalCode" => htmlspecialchars_decode($aRow["ville_code_postal"]),
+        "code_postal" => htmlspecialchars_decode($aRow["ville_code_postal"]),
         "population" => $aRow["ville_population_2010"],
-        "densitePop" => $aRow["ville_densite_2010"],
+        "densite" => $aRow["ville_densite_2010"],
         "superficie" => $aRow["ville_surface"],
         "alt_min" => $aRow["ville_zmin"],
         "alt_max" => $aRow["ville_zmax"],
@@ -692,8 +659,8 @@ function insertNewCity($info, $db) {
     $stmt->bindValue(":zmax", $info["alt_max"], PDO::PARAM_INT);
     $stmt->bindValue(":pop", $info["population"], PDO::PARAM_INT);
     $stmt->bindValue(":surface", $info["superficie"], PDO::PARAM_INT);
-    $stmt->bindValue(":densite", floor($info["densitePop"]), PDO::PARAM_INT);
-    $stmt->bindValue(":cp", $info["postalCode"], PDO::PARAM_STR);
+    $stmt->bindValue(":densite", floor($info["densite"]), PDO::PARAM_INT);
+    $stmt->bindValue(":cp", $info["code_postal"], PDO::PARAM_STR);
     $stmt->bindValue(":statut", 'A', PDO::PARAM_STR);
     $stmt->execute();
 }
@@ -711,9 +678,9 @@ function newCityInfo($infoZone, $name, $aOldCity) {
         "longitude" => $aOldCity["longitude"],
         "latitude" => $aOldCity["latitude"],
         "code_departement" => $aOldCity["code_departement"],
-        "postalCode" => $aOldCity["postalCode"],
+        "code_postal" => $aOldCity["code_postal"],
         "population" => $infoZone["population"],
-        "densitePop" => $infoZone["densite"],
+        "densite" => $infoZone["densite"],
         "superficie" => $infoZone["superficie"],
         "alt_min" => $infoZone["zmin"],
         "alt_max" => $infoZone["zmax"]

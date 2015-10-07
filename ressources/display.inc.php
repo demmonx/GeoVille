@@ -186,56 +186,51 @@ function displayInputOptionRegion($listeReg, $default = null) {
  */
 function extractFromPattern($pattern, $elem) {
     $str = $pattern;
-    // nom de la ville
-    $str = isset($elem["nom"]) ? preg_replace('/\{nom\}/', $elem["nom"], $str) : $str;
 
-    // code de la ville
-    $str = isset($elem["code"]) ? preg_replace('/\{code\}/', $elem["code"], $str)
-            : $str;
+    // Tableau association pattern => valeur
+    $alias = array(
+        "nom" => isset($elem["nom"]) ? $elem["nom"] : null,
+        "code" => isset($elem["code"]) ? $elem["code"] : null,
+        "code_dep" => isset($elem["code_departement"]) ? $elem["code_departement"] : null,
+        "nom_dep" => isset($elem["departement"]) ? $elem["departement"] : null,
+        "nom_region" => isset($elem["region"]) ? $elem["region"] : null,
+        "code_region" => isset($elem["code_region"]) ? $elem["code_region"] : null,
+        "code_postal" => isset($elem["code_postal"]) ? $elem["code_postal"] : null,
+        "population" => isset($elem["population"]) ? $elem["population"] : null,
+        "densite" => isset($elem["densite"]) ? round($elem["densite"], 2) : null,
+        "alt_min" => isset($elem["alt_min"]) ? $elem["alt_min"] : null,
+        "superficie" => isset($elem["superficie"]) ? round($elem["superficie"], 2) : null,
+        "alt_max" => isset($elem["alt_max"]) ? $elem["alt_max"] : null,
+        "distance" => isset($elem["distance"]) ? round($elem["distance"], 2) : null,
+        "latitude" => isset($elem["latitude"]) ? $elem["latitude"] : null,
+        "longitude" => isset($elem["longitude"]) ? $elem["longitude"] : null,
+    );
 
-    // code du département
-    $str = isset($elem["code_departement"]) ? preg_replace('/\{code_dep\}/',
-            $elem["code_departement"], $str) : $str;
-
-    // nom du département
-    $str = isset($elem["departement"]) ? preg_replace('/\{nom_dep\}/',
-            $elem["departement"], $str) : $str;
-
-    // nom de la région
-    $str = isset($elem["region"]) ? preg_replace('/\{nom_region\}/',
-            $elem["region"], $str) : $str;
-
-    // code de la région
-    $str = isset($elem["code_region"]) ? preg_replace('/\{code_region\}/',
-            $elem["code_region"], $str) : $str;
-
-    // code postal
-    $str = isset($elem["postalCode"]) ? preg_replace('/\{code_postal\}/',
-            $elem["postalCode"], $str) : $str;
-
-    // population de la ville
-    $str = isset($elem["population"]) ? preg_replace('/\{population\}/',
-            $elem["population"], $str) : $str;
-
-    // densite de population
-    $str = isset($elem["densitePop"]) ? preg_replace('/\{densite\}/',
-            $elem["densitePop"], $str) : $str;
-
-    // altitude mini
-    $str = isset($elem["alt_min"]) ? preg_replace('/\{alt_min\}/',
-            $elem["alt_min"], $str) : $str;
-
-    // Superficie
-    $str = isset($elem["nom"]) ? preg_replace('/\{superficie\}/',
-            $elem["superficie"], $str) : $str;
-
-    // altitude Maxi
-    $str = isset($elem["alt_max"]) ? preg_replace('/\{alt_max\}/',
-            $elem["alt_max"], $str) : $str;
-
-    // distance par rapport à la ville
-    $str = isset($elem["distance"]) ? preg_replace('/\{distance\}/',
-            round($elem["distance"], 2), $str) : $str;
+    // Association
+    foreach ($alias as $key => $value) {
+        $str = isset($value) ? preg_replace("/\{" . $key . "\}/", $value, $str) : $str;
+    }
 
     return $str;
+}
+
+/**
+ * Affiche les informations sur le département
+ */
+function displayInfoDep($dep) {
+    $pattern = "<table>
+        <tr>
+            <td class='titre'>Population :</td>
+            <td>{population} habitants</td>
+        </tr>
+	<tr>
+            <td class='titre'>Densité :</td>
+            <td>{densite} hab/km²</td>
+	</tr>
+	<tr>
+            <td class='titre'>Superficie :</td>
+            <td>{superficie} km²</td>
+	</tr>
+	</table>";
+    echo extractFromPattern($pattern, $dep);
 }

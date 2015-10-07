@@ -97,3 +97,36 @@ function getPicturesFromWiki($cityName) {
     }
     return $imgTab;
 }
+
+// Coupe le nom de la ville pour récupérer le début et la fin
+// Permet de faire des comparaisons avec des REGEX
+function cutCityName($cityName) {
+    $ok = false;
+
+    $fin = $cityName;
+    $debut = $cityName;
+
+// Coupe au niveau des ''', des ' ' et des '-' pour rechercher dans l'url de
+// l'image
+    while (!$ok) {
+        if (0 < strrpos($fin, "'") || 0 < strrpos($debut, "'")) {
+            $fin = substr($fin, strrpos($fin, "'") + 1, strlen($fin));
+            $debut = substr($debut, 0, strrpos($debut, "'"));
+        } else
+        if (0 < strrpos($fin, "-") || 0 < strrpos($debut, "-")) {
+            $fin = substr($fin, strrpos($fin, "-") + 1, strlen($fin));
+            $debut = substr($debut, 0, strrpos($debut, "-"));
+        } else
+        if (0 < strrpos($fin, " ") || 0 < strrpos($debut, " ")) {
+            $fin = substr($fin, strrpos($fin, " ") + 1, strlen($fin));
+            $debut = substr($debut, 0, strrpos($debut, " "));
+        } else {
+            $ok = true;
+        }
+    }
+
+// Retour des deux variables
+    $tab['debut'] = $debut;
+    $tab['fin'] = $fin;
+    return $tab;
+}

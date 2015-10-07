@@ -29,38 +29,28 @@ if ($depIntoRegion == null || count($depIntoRegion) <= 0) {
     exit("Aucune information trouvée pour cette région.</body></html>");
 }
 
-echo "<h1>Région : " . $depIntoRegion[0]["region"] . "</h1>";
+echo extractFromPattern("<h1>Région : {nom_region}</h1>", $depIntoRegion[0]);
 // list the departements and show related informations
 foreach ($depIntoRegion as $dep) {
-    echo "<a href='#' class='spoiler'><h2>" . $dep["departement"] . "</h2></a>";
+    echo extractFromPattern("<a href='#' class='spoiler'><h2>{nom_dep}</h2></a>", $dep);
     echo "<div class='spoil spoil-accueil'>";
-    echo "<table>
-				<tr>
-					<td class='titre'>Population :</td>
-					<td>" . $dep['population'] . " habitants</td>
-				</tr>
-				<tr>
-					<td class='titre'>Densité :</td>
-					<td>" . round($dep['densite'], 2) . " hab/km²</td>
-				</tr>
-					        				<tr>
-					<td class='titre'>Superficie :</td>
-					<td>" . round($dep['superficie'], 2) . " km²</td>
-				</tr>
-			</table>
-              <br>Plus grandes communes : <br>";
+    displayInfoDep($dep);
+    echo "<br>Plus grandes communes : <br>";
 
     // List biggest city from departement
     $ville = getBiggestCityOfDep($dep["code_departement"], VILLE_PAR_DEP);
     if ($ville == null || count($ville) <= 0) {
         echo "Pas de villes pour le département";
-    } else { // show city information
+    } else { 
         echo "<table>";
+
+        // Show city info
         foreach ($ville as $city) {
-            echo "<tr><td><a href='ville.php?code=" . $city["code"] . "'>" .
-            $city["nom"] . "</a></td><td>" . $city["population"] .
-            " habitants<td></tr>";
+            $pattern = "<tr><td><a href=\"ville.php?code={code}\">{nom}</a>"
+                    . "</td><td>{population} habitants<td></tr>";
+            echo extractFromPattern($pattern, $city);
         }
+
         echo "</table><a href='lister_communes.php?code=" . $dep["code_departement"] .
         "' class='list-commune'><button>Voir toutes</button></a>";
     }

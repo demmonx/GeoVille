@@ -23,22 +23,22 @@
         exit("Erreur, aucunne donnée trouvée pour cette ville");
     }
     ?>
-    <h1>Informations sur <?php echo $city_informations['nom']; ?></h1>
+    <h1>Informations sur <?php echo extractFromPattern("{nom}", $city_informations); ?></h1>
     <form>
         <fieldset>
             <legend>Administration</legend>
             <table>
                 <tr>
                     <td class="titre">Département :</td>
-                    <td><?php echo $city_informations['departement']; ?></td>
+                    <td><?php echo extractFromPattern("{nom_dep}", $city_informations); ?></td>
                 </tr>
                 <tr>
                     <td class="titre">Région :</td>
-                    <td><?php echo $city_informations['region']; ?></td>
+                    <td><?php echo extractFromPattern("{nom_region}", $city_informations); ?></td>
                 </tr>
                 <tr>
                     <td class="titre">Code Postal :</td>
-                    <td><?php echo $city_informations['postalCode']; ?></td>
+                    <td><?php echo extractFromPattern("{code_postal}", $city_informations); ?></td>
                 </tr>
             </table>
         </fieldset>
@@ -48,11 +48,11 @@
             <table>
                 <tr>
                     <td class="titre">Population :</td>
-                    <td><?php echo $city_informations['population']; ?> habitants</td>
+                    <td><?php echo extractFromPattern("{population}", $city_informations); ?> habitants</td>
                 </tr>
                 <tr>
                     <td class="titre">Densité :</td>
-                    <td><?php echo $city_informations['densitePop']; ?> hab/km²</td>
+                    <td><?php echo extractFromPattern("{densite}", $city_informations); ?> hab/km²</td>
                 </tr>
             </table>
         </fieldset>
@@ -62,23 +62,23 @@
             <table>
                 <tr>
                     <td class="titre">Superficie :</td>
-                    <td><?php echo $city_informations['superficie']; ?> km²</td>
+                    <td><?php echo extractFromPattern("{superficie}", $city_informations); ?> km²</td>
                 </tr>
                 <tr>
                     <td class="titre">Altitude mini :</td>
-                    <td><?php echo $city_informations['alt_min']; ?> m</td>
+                    <td><?php echo extractFromPattern("{alt_min}", $city_informations); ?> m</td>
                 </tr>
                 <tr>
                     <td class="titre">Altitude maxi :</td>
-                    <td><?php echo $city_informations['alt_max'] ?> m</td>
+                    <td><?php echo extractFromPattern("{alt_max}", $city_informations); ?> m</td>
                 </tr>
                 <tr>
                     <td class="titre">Latitude :</td>
-                    <td><?php echo $city_informations['latitude'] ?>°</td>
+                    <td><?php echo extractFromPattern("{latitude}", $city_informations); ?>°</td>
                 </tr>
                 <tr>
                     <td class="titre">Longitude :</td>
-                    <td><?php echo $city_informations['longitude'] ?>°</td>
+                    <td><?php echo extractFromPattern("{longitude}", $city_informations); ?>°</td>
                 </tr>
             </table>
         </fieldset>

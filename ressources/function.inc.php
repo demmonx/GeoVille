@@ -79,3 +79,4 @@ function better_crypt($input, $rounds = 10) {
     );
     return password_hash($input, PASSWORD_BCRYPT, $crypt_options);
 }
+

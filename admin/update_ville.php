@@ -42,7 +42,7 @@ if (!isset($city_informations) || count($city_informations) <= 0) {
             <tr>
                 <td class="titre">Code Postal :</td>
                 <td><input type="text" name="codePostal" id="codePostal" min=0
-                           value="<?php echo $city_informations['postalCode']; ?>" /></td>
+                           value="<?php echo $city_informations['code_postal']; ?>" /></td>
             </tr>
         </table>
     </fieldset>
@@ -58,7 +58,7 @@ if (!isset($city_informations) || count($city_informations) <= 0) {
             </tr>
             <tr>
                 <td class="titre">Densité :</td>
-                <td><span id="densite"><?php echo $city_informations['densitePop']; ?></span>
+                <td><span id="densite"><?php echo $city_informations['densite']; ?></span>
                     hab/km²</td>
             </tr>
         </table>
