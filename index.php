@@ -29,10 +29,10 @@ if ($depIntoRegion == null || count($depIntoRegion) <= 0) {
     exit("Aucune information trouvée pour cette région.</body></html>");
 }
 
-echo "<h1>Région : " . $depIntoRegion[0]["nom_region"] . "</h1>";
+echo "<h1>Région : " . $depIntoRegion[0]["region"] . "</h1>";
 // list the departements and show related informations
 foreach ($depIntoRegion as $dep) {
-    echo "<a href='#' class='spoiler'><h2>" . $dep["nom"] . "</h2></a>";
+    echo "<a href='#' class='spoiler'><h2>" . $dep["departement"] . "</h2></a>";
     echo "<div class='spoil spoil-accueil'>";
     echo "<table>
 				<tr>
@@ -51,7 +51,7 @@ foreach ($depIntoRegion as $dep) {
               <br>Plus grandes communes : <br>";
 
     // List biggest city from departement
-    $ville = getBiggestCityOfDep($dep["code"], VILLE_PAR_DEP);
+    $ville = getBiggestCityOfDep($dep["code_departement"], VILLE_PAR_DEP);
     if ($ville == null || count($ville) <= 0) {
         echo "Pas de villes pour le département";
     } else { // show city information
@@ -61,7 +61,7 @@ foreach ($depIntoRegion as $dep) {
             $city["nom"] . "</a></td><td>" . $city["population"] .
             " habitants<td></tr>";
         }
-        echo "</table><a href='lister_communes.php?code=" . $dep["code"] .
+        echo "</table><a href='lister_communes.php?code=" . $dep["code_departement"] .
         "' class='list-commune'><button>Voir toutes</button></a>";
     }
     echo "</div><br>";

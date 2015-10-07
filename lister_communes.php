@@ -1,4 +1,5 @@
 <?php
+
 // TODO Fusionner ce fichier avec liste ville de l'admin
 $titre = "Villes de France";
 require_once ("ressources/header.php");
@@ -18,4 +19,3 @@ if (!isset($cities) || count($cities) <= 0) {
 $pattern = "<a href='ville.php?code={code}'>{nom}</a>";
 $cities = getCityFromDepartement($codeDep);
 displayCityByColumn($cities, NB_COL, $pattern);
-

@@ -15,7 +15,8 @@
     }
 
     // Get the name
-    $titre = isset($city_informations) && count($city_informations) > 0 ? $city_informations['nom'] : "Ville inconnue";
+    $titre = isset($city_informations) && count($city_informations) > 0 ? $city_informations['nom']
+            : "Ville inconnue";
     require_once ("ressources/header.php");
 
     if (!isset($city_informations) || count($city_informations) <= 0) {
@@ -97,15 +98,18 @@
 
     echo "<div class='deux-colonnes'>";
 // List closest city
-    $closestCity = getCloseCity($city_informations['latitude'], $city_informations['longitude'], $ville_id, DISTANCE);
+    $closestCity = getCloseCity($city_informations['latitude'],
+        $city_informations['longitude'], $ville_id, DISTANCE);
     if (count($closestCity) > 0) {
         echo "<div class='colonne'>";
-        displayCloseCityFromList("Villes voisines à moins de " . DISTANCE . " km", "ville.php", $closestCity);
+        displayCity("Villes voisines à moins de " . DISTANCE . " km",
+            "ville.php", $closestCity);
         echo "</div>";
     }
 
     echo "<div class='colonne'>";
-    displayCity("Villes de même taille", "ville.php", getSameSizeCity($ville_id, MARGE_POP, NB_VILLE));
+    displayCity("Villes de même taille", "ville.php",
+        getSameSizeCity($ville_id, MARGE_POP, NB_VILLE));
     echo "</div>";
     echo "</div>"
     ?>
