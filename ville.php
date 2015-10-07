@@ -100,11 +100,12 @@
 // List closest city
     $closestCity = getCloseCity($city_informations['latitude'],
         $city_informations['longitude'], $ville_id, DISTANCE);
-    if (count($closestCity) > 0) {
+
+if (count($closestCity) > 0) {
         echo "<div class='colonne'>";
         displayCity("Villes voisines à moins de " . DISTANCE . " km",
             "ville.php", $closestCity);
-        echo "</div>";
+    echo "</div>";
     }
 
     echo "<div class='colonne'>";

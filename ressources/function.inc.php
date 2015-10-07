@@ -445,11 +445,8 @@ function getCloseCity($latitude, $longitude, $cityCode, $distance) {
  * @param stmt $response La réponse de la base de données
  */
 function getCloseCityInfo($response, $latitude, $longitude, $distance) {
-    $dep_num = "00"; // Numero de département
-    $reg_nom = null; // nom de region
-    $region = 0; // Compteur de région
-    $departement = 0; // Compteur de département pour la région
-    $ville = 0; // Compteur de ville pour le département
+
+    $i = 0; // Compteur de ville pour le département
 
     $returnArray = array();
     while ($row = $response->fetch()) {
@@ -459,24 +456,9 @@ function getCloseCityInfo($response, $latitude, $longitude, $distance) {
         if ($size == 0 || $size > $distance) { // If distance is higher
             continue;
         }
-// Rank by region
-        if ($row["nom_r"] != $reg_nom) {
-            $reg_nom = $row["nom_r"];
-            $region ++;
-            $departement = 0;
-        }
-
-// And rank by county
-        if ($row["ville_departement"] != $dep_num) {
-            $dep_num = $row["ville_departement"];
-            $departement ++;
-            $ville = 0;
-        }
-
-// Add item to return tab
-        $returnArray[$region - 1][$departement - 1][$ville] = extractCityInfoFromARow($row);
-        $returnArray[$region - 1][$departement - 1][$ville]['distance'] = $size;
-        $ville ++;
+        $returnArray[$i] = extractCityInfoFromARow($row);
+        $returnArray[$i]['distance'] = $size;
+        $i ++;
     }
     return $returnArray;
 }
@@ -531,8 +513,8 @@ function convertCityListToArray($list) {
     foreach ($list as $row) {
 
 // Rank by region
-        if ($row["region"] != $reg_nom) {
-            $reg_nom = $row["region"];
+        if ($row["code_region"] != $reg_nom) {
+            $reg_nom = $row["code_region"];
             $region ++;
             $departement = 0;
         }

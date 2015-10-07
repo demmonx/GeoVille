@@ -33,48 +33,6 @@ function displayPhoto($list, $nb) {
     }
 }
 
-/**
- * Affiche la liste des villes avec distance
- * @param string $titre Le titre de la rubrique
- * @param string $page La page à ouvrir lors de la consultation
- * @param array $closestCity Liste des villes avec une notion de distance
- */
-function displayCloseCityFromList($titre, $page, $closestCity) {
-
-// title
-    if (count($closestCity) > 0) {
-        echo "<h2>" . $titre . "</h2>";
-    }
-
-// display the region
-    for ($region = 0; $region < count($closestCity); $region ++) {
-        echo "<h3>" . $closestCity[$region][0][0]['nom_region'] . "</h3>";
-
-// display the county
-        for ($departement = 0; $departement < count($closestCity[$region]);
-                $departement ++) {
-            echo "<h4>" . $closestCity[$region][$departement][0]['num_departement'];
-            echo " - " . $closestCity[$region][$departement][0]['nom_departement'] .
-            "</h4>";
-
-// display the city
-            for ($ville = 0; $ville < count($closestCity[$region][$departement]);
-                    $ville ++) {
-// Show the city and distance between this city and the current
-// working city
-                echo "<a href='" . $page . "?code=";
-                echo $closestCity[$region][$departement][$ville]['id_ville'];
-                echo "' >";
-                echo $closestCity[$region][$departement][$ville]['nom_ville'];
-                echo " ( ";
-                echo round($closestCity[$region][$departement][$ville]['distance'],
-                    2);
-                echo "km )</a><br>";
-            }
-        }
-    }
-}
-
 // Show the city from a list but not an array
 function displayCity($title, $page, $listeCity) {
 
@@ -104,7 +62,7 @@ function displayCity($title, $page, $listeCity) {
 // working city
                 $pattern = "<a href=\"" . $page . "?code={code}\">{nom}";
                 $pattern .= isset($city[$region][$departement][$ville]["distance"])
-                        ? "( {distance} km)" : "";
+                        ? " ({distance} km)" : "";
                 $pattern .= "</a><br>";
                 echo extractFromPattern($pattern,
                     $city[$region][$departement][$ville]);
