@@ -12,18 +12,18 @@ if ($region) {
     $region = getRegionByID($region);
 } else {
     $region["nom"] = "Midi-Pyrénnées"; // Par défaut
-    $region["code"] = 16;
+    $region["code_region"] = 16;
 }
 
 // Selecteur pour la région à afficher
 echo "Choisir une région : <select id='region_choix'>";
 $listeRegion = getRegion();
-displayInputOptionRegion($listeRegion, $region["code"]);
+displayInputOptionRegion($listeRegion, $region["code_region"]);
 echo "</select>\n";
 echo "<a href='search_city.php'><button>Recherche</button></a>\n";
 
 // Get the departements from the region
-$depIntoRegion = getDepartementFromRegion($region["code"]);
+$depIntoRegion = getDepartementFromRegion($region["code_region"]);
 // If list is empty
 if ($depIntoRegion == null || count($depIntoRegion) <= 0) {
     exit("Aucune information trouvée pour cette région.</body></html>");
