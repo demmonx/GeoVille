@@ -86,7 +86,7 @@ function getPictureInfo($codePicture) {
 // fill the return array
         $returnArray = array(
             'path' => $row['photo_path'],
-            'title' => $row['photo_desc'],
+            'titre' => $row['photo_desc'],
             'rang' => $row['rang'],
             'ville' => $row['photo_ville'],
             'id' => $row['photo_id']
@@ -121,7 +121,7 @@ function getPicturesFromDB($cityCode) {
         while ($row = $response->fetch()) {
 // Show specified image
             $imgTab[$c]['path'] = $row['photo_path'];
-            $imgTab[$c]['title'] = $row['photo_desc'];
+            $imgTab[$c]['titre'] = $row['photo_desc'];
             $imgTab[$c]['rang'] = $row['rang'];
             $imgTab[$c]['id'] = $row['photo_id'];
             $imgTab[$c]['ville'] = $row['photo_ville'];
@@ -253,10 +253,10 @@ function picByCityAndRank($cityCode, $pictureRang, $sens) {
 // Check the previous rang
     if ($sens) {
         $sql .= "AND rang > :rang"
-                . " ORDER BY rang ASC ";
+            . " ORDER BY rang ASC ";
     } else {
         $sql .= "AND rang < :rang "
-                . " ORDER BY rang DESC ";
+            . " ORDER BY rang DESC ";
     }
     $sql .= "LIMIT 1";
 

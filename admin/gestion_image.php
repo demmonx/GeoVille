@@ -54,9 +54,10 @@ echo "<h1>Modification des images : " . $city_informations['nom'] .
                 <td><textarea maxlength="100" required rows="4" cols="80" id="titre"
                               name="titre" placeHolder="Titre" /></textarea></td>
             </tr>
-            <td><input type="hidden" name="code" id="code"
-                       value="<?php echo $ville_id; ?>" /> <input id="uploadSubmit"
-                       type="submit" value="Ajouter" /> Max 1Mo</td>
+            <tr>
+                <td><input type="hidden" name="code" id="code"
+                           value="<?php echo $ville_id; ?>" /> <input id="uploadSubmit"
+                           type="submit" value="Ajouter" /> Max 1Mo</td>
             </tr>
             <tr>
                 <td colspan=2><span id="msgReturn"></span></td>

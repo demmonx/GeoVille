@@ -12,12 +12,8 @@ function displayPhoto($list, $nb) {
         }
 
 // picture display
-        echo "<figure><a href='" . $list[$z]['path'] . "'>";
-        echo "<img src='" . $list[$z]['path'] . "' alt='" .
-        $list[$z]['title'] . "' />";
-        echo "<figcaption>" . $list[$z]['title'] . "</figcaption>";
-        echo "</a></figure>";
-
+        $pattern = "<figure><a href=\"{path}\"><img src='{path}' alt=\"{titre}\" /><figcaption>{titre}</figcaption></a></figure>";
+        echo extractFromPattern($pattern, $list[$z]);
 // end of div
         if ($z == count($list) - 1) {
             echo "</div>";
@@ -191,7 +187,8 @@ function extractFromPattern($pattern, $elem) {
     $alias = array(
         "nom" => isset($elem["nom"]) ? $elem["nom"] : null,
         "code" => isset($elem["code"]) ? $elem["code"] : null,
-        "code_dep" => isset($elem["code_departement"]) ? $elem["code_departement"] : null,
+        "code_dep" => isset($elem["code_departement"]) ? $elem["code_departement"]
+                : null,
         "nom_dep" => isset($elem["departement"]) ? $elem["departement"] : null,
         "nom_region" => isset($elem["region"]) ? $elem["region"] : null,
         "code_region" => isset($elem["code_region"]) ? $elem["code_region"] : null,
@@ -199,11 +196,18 @@ function extractFromPattern($pattern, $elem) {
         "population" => isset($elem["population"]) ? $elem["population"] : null,
         "densite" => isset($elem["densite"]) ? round($elem["densite"], 2) : null,
         "alt_min" => isset($elem["alt_min"]) ? $elem["alt_min"] : null,
-        "superficie" => isset($elem["superficie"]) ? round($elem["superficie"], 2) : null,
+        "superficie" => isset($elem["superficie"]) ? round($elem["superficie"],
+                2) : null,
         "alt_max" => isset($elem["alt_max"]) ? $elem["alt_max"] : null,
         "distance" => isset($elem["distance"]) ? round($elem["distance"], 2) : null,
         "latitude" => isset($elem["latitude"]) ? $elem["latitude"] : null,
         "longitude" => isset($elem["longitude"]) ? $elem["longitude"] : null,
+        "path" => isset($elem["path"]) ? $elem["path"] : null,
+        "titre" => isset($elem["titre"]) ? $elem["titre"] : null,
+        "id" => isset($elem["id"]) ? $elem["id"] : null,
+        "rang" => isset($elem["rang"]) ? $elem["rang"] : null,
+        "description" => isset($elem["description"]) ? $elem["description"] : null,
+        "ville" => isset($elem["ville"]) ? $elem["ville"] : null,
     );
 
     // Association
@@ -233,4 +237,33 @@ function displayInfoDep($dep) {
 	</tr>
 	</table>";
     echo extractFromPattern($pattern, $dep);
+}
+
+/**
+ * Affiche la liste des photos avec les options de modification associée
+ * @param liste $imageAboutThisCity Liste des images à afficher
+ */
+function displayPictureOption($imageAboutThisCity) {
+    // show the options with pictures
+    for ($z = 0; $z < count($imageAboutThisCity); $z ++) {
+        $pattern = "<div class='liste-pic'><form class='name-edit' action='update_picture_name.php' method='post'>";
+        $pattern .= "<table>\n<tr>\n\t<td><input type='text' name='title' value='{titre}' />";
+        $pattern .= "<input type='hidden' name='code' value='{id_photo}' /></td>"
+            . "\n\t<td><input type='submit' value='Modifier'/>\n\t</td>\n</tr>";
+        $pattern .= "\n<tr>\n\t<td rowspan='" . ($z == 0 || $z == count($imageAboutThisCity)
+            - 1 ? 2 : 3) . "'>";
+        $pattern .= "<figure><a href={path}><img src='{path}' alt='{titre}' /></a></figure>\n\t</td>"
+            . "\n\t<td class='action-pic'><a class='delete-pic' href='delete_img.php?code={id_photo}'>"
+            . "<button>Supprimer</button></a>\n\t</td>\n</tr>";
+        if ($z > 0) {
+            $pattern .= "\n<tr>\n\t<td class='action-pic'><a class='sens-edit' href='change_image_rang.php"
+                . "?code={id_photo}&sens=1'><button>Monter</button></a>\n\t</td>\n</tr>";
+        }
+        if ($z < count($imageAboutThisCity) - 1) {
+            $pattern .= "\n<tr>\n\t<td class='action-pic'><a class='sens-edit' href='change_image_rang.php"
+                . "?code={id_photo}&sens=0'><button>Descendre</button></a>\n\t</td>\n</tr>";
+        }
+        $pattern .= '</table></form></div>';
+        echo extractFromPattern($pattern, $imageAboutThisCity[$z]);
+    }
 }
