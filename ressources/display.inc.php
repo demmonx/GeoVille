@@ -5,7 +5,9 @@
  * @param array $list Liste d'image et de descriptions à afficher
  * @param int $nb Nombre de photos à afficher
  */
-function displayPhoto($list, $nb) {
+function displayPhoto($list) {
+    $nb = isset(getConfigFile()["nombre_photos"]) ? getConfigFile()["nombre_photos"]
+            : 5;
     for ($z = 0; $z < count($list); $z ++) {
         if ($z == 1) { // show only 1 picture
             echo "<div class='spoil'>";
@@ -15,7 +17,7 @@ function displayPhoto($list, $nb) {
         $pattern = "<figure><a href=\"{path}\"><img src='{path}' alt=\"{titre}\" /><figcaption>{titre}</figcaption></a></figure>";
         echo extractFromPattern($pattern, $list[$z]);
 // end of div
-        if ($z == count($list) - 1) {
+        if ($z == count($list) - 1 || $z == $nb) {
             echo "</div>";
         } else
         if ($z < 1 && count($list) > 1) { // spoiler
@@ -185,29 +187,29 @@ function extractFromPattern($pattern, $elem) {
 
     // Tableau association pattern => valeur
     $alias = array(
-        "nom" => isset($elem["nom"]) ? $elem["nom"] : null,
-        "code" => isset($elem["code"]) ? $elem["code"] : null,
+        "nom" => isset($elem["nom"]) ? $elem["nom"] : "",
+        "code" => isset($elem["code"]) ? $elem["code"] : "",
         "code_dep" => isset($elem["code_departement"]) ? $elem["code_departement"]
-                : null,
-        "nom_dep" => isset($elem["departement"]) ? $elem["departement"] : null,
-        "nom_region" => isset($elem["region"]) ? $elem["region"] : null,
-        "code_region" => isset($elem["code_region"]) ? $elem["code_region"] : null,
-        "code_postal" => isset($elem["code_postal"]) ? $elem["code_postal"] : null,
-        "population" => isset($elem["population"]) ? $elem["population"] : null,
-        "densite" => isset($elem["densite"]) ? round($elem["densite"], 2) : null,
-        "alt_min" => isset($elem["alt_min"]) ? $elem["alt_min"] : null,
+                : "",
+        "nom_dep" => isset($elem["departement"]) ? $elem["departement"] : "",
+        "nom_region" => isset($elem["region"]) ? $elem["region"] : "",
+        "code_region" => isset($elem["code_region"]) ? $elem["code_region"] : "",
+        "code_postal" => isset($elem["code_postal"]) ? $elem["code_postal"] : "",
+        "population" => isset($elem["population"]) ? $elem["population"] : "",
+        "densite" => isset($elem["densite"]) ? round($elem["densite"], 2) : "",
+        "alt_min" => isset($elem["alt_min"]) ? $elem["alt_min"] : "",
         "superficie" => isset($elem["superficie"]) ? round($elem["superficie"],
-                2) : null,
-        "alt_max" => isset($elem["alt_max"]) ? $elem["alt_max"] : null,
-        "distance" => isset($elem["distance"]) ? round($elem["distance"], 2) : null,
-        "latitude" => isset($elem["latitude"]) ? $elem["latitude"] : null,
-        "longitude" => isset($elem["longitude"]) ? $elem["longitude"] : null,
-        "path" => isset($elem["path"]) ? $elem["path"] : null,
-        "titre" => isset($elem["titre"]) ? $elem["titre"] : null,
-        "id" => isset($elem["id"]) ? $elem["id"] : null,
-        "rang" => isset($elem["rang"]) ? $elem["rang"] : null,
-        "description" => isset($elem["description"]) ? $elem["description"] : null,
-        "ville" => isset($elem["ville"]) ? $elem["ville"] : null,
+                2) : "",
+        "alt_max" => isset($elem["alt_max"]) ? $elem["alt_max"] : "",
+        "distance" => isset($elem["distance"]) ? round($elem["distance"], 2) : "",
+        "latitude" => isset($elem["latitude"]) ? $elem["latitude"] : "",
+        "longitude" => isset($elem["longitude"]) ? $elem["longitude"] : "",
+        "path" => isset($elem["path"]) ? $elem["path"] : "",
+        "titre" => isset($elem["titre"]) ? $elem["titre"] : "",
+        "id" => isset($elem["id"]) ? $elem["id"] : "",
+        "rang" => isset($elem["rang"]) ? $elem["rang"] : "",
+        "description" => isset($elem["description"]) ? $elem["description"] : "",
+        "ville" => isset($elem["ville"]) ? $elem["ville"] : "",
     );
 
     // Association
