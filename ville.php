@@ -23,22 +23,26 @@
         exit("Erreur, aucunne donnée trouvée pour cette ville");
     }
     ?>
-    <h1>Informations sur <?php echo extractFromPattern("{nom}", $city_informations); ?></h1>
+    <h1>Informations sur <?php echo extractFromPattern("{nom}",
+        $city_informations); ?></h1>
     <form>
         <fieldset>
             <legend>Administration</legend>
             <table>
                 <tr>
                     <td class="titre">Département :</td>
-                    <td><?php echo extractFromPattern("{nom_dep}", $city_informations); ?></td>
+                    <td><?php echo extractFromPattern("{nom_dep}",
+        $city_informations); ?></td>
                 </tr>
                 <tr>
                     <td class="titre">Région :</td>
-                    <td><?php echo extractFromPattern("{nom_region}", $city_informations); ?></td>
+                    <td><?php echo extractFromPattern("{nom_region}",
+        $city_informations); ?></td>
                 </tr>
                 <tr>
                     <td class="titre">Code Postal :</td>
-                    <td><?php echo extractFromPattern("{code_postal}", $city_informations); ?></td>
+                    <td><?php echo extractFromPattern("{code_postal}",
+        $city_informations); ?></td>
                 </tr>
             </table>
         </fieldset>
@@ -48,11 +52,13 @@
             <table>
                 <tr>
                     <td class="titre">Population :</td>
-                    <td><?php echo extractFromPattern("{population}", $city_informations); ?> habitants</td>
+                    <td><?php echo extractFromPattern("{population}",
+        $city_informations); ?> habitants</td>
                 </tr>
                 <tr>
                     <td class="titre">Densité :</td>
-                    <td><?php echo extractFromPattern("{densite}", $city_informations); ?> hab/km²</td>
+                    <td><?php echo extractFromPattern("{densite}",
+        $city_informations); ?> hab/km²</td>
                 </tr>
             </table>
         </fieldset>
@@ -62,23 +68,28 @@
             <table>
                 <tr>
                     <td class="titre">Superficie :</td>
-                    <td><?php echo extractFromPattern("{superficie}", $city_informations); ?> km²</td>
+                    <td><?php echo extractFromPattern("{superficie}",
+        $city_informations); ?> km²</td>
                 </tr>
                 <tr>
                     <td class="titre">Altitude mini :</td>
-                    <td><?php echo extractFromPattern("{alt_min}", $city_informations); ?> m</td>
+                    <td><?php echo extractFromPattern("{alt_min}",
+        $city_informations); ?> m</td>
                 </tr>
                 <tr>
                     <td class="titre">Altitude maxi :</td>
-                    <td><?php echo extractFromPattern("{alt_max}", $city_informations); ?> m</td>
+                    <td><?php echo extractFromPattern("{alt_max}",
+        $city_informations); ?> m</td>
                 </tr>
                 <tr>
                     <td class="titre">Latitude :</td>
-                    <td><?php echo extractFromPattern("{latitude}", $city_informations); ?>°</td>
+                    <td><?php echo extractFromPattern("{latitude}",
+        $city_informations); ?>°</td>
                 </tr>
                 <tr>
                     <td class="titre">Longitude :</td>
-                    <td><?php echo extractFromPattern("{longitude}", $city_informations); ?>°</td>
+                    <td><?php echo extractFromPattern("{longitude}",
+        $city_informations); ?>°</td>
                 </tr>
             </table>
         </fieldset>
@@ -93,7 +104,7 @@
     if (count($imageAboutThisCity) > 0) {
         echo "<h2>Photo(s) :</h2>";
     }
-    displayPhoto($imageAboutThisCity, NB_IMAGE);
+    displayPhoto($imageAboutThisCity);
 
 
     echo "<div class='deux-colonnes'>";
@@ -101,11 +112,11 @@
     $closestCity = getCloseCity($city_informations['latitude'],
         $city_informations['longitude'], $ville_id, DISTANCE);
 
-if (count($closestCity) > 0) {
+    if (count($closestCity) > 0) {
         echo "<div class='colonne'>";
         displayCity("Villes voisines à moins de " . DISTANCE . " km",
             "ville.php", $closestCity);
-    echo "</div>";
+        echo "</div>";
     }
 
     echo "<div class='colonne'>";
