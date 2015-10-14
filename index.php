@@ -3,7 +3,6 @@ $titre = "Villes de France";
 $js = "index.js";
 require_once ("ressources/header.php");
 require_once ("ressources/core.php");
-define("VILLE_PAR_DEP", 12);
 
 // Récupère la valeur passé en paramètre
 $region = filter_input(INPUT_GET, 'code', FILTER_VALIDATE_INT,
@@ -38,7 +37,7 @@ foreach ($depIntoRegion as $dep) {
     echo "<br>Plus grandes communes : <br>";
 
     // List biggest city from departement
-    $ville = getBiggestCityOfDep($dep["code_departement"], VILLE_PAR_DEP);
+    $ville = getBiggestCityOfDep($dep["code_departement"]);
     if ($ville == null || count($ville) <= 0) {
         echo "Pas de villes pour le département";
     } else { 

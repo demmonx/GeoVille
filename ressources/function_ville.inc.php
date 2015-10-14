@@ -83,9 +83,9 @@ function getCityDescription($cityName, $cityID) {
 
 
 // Get closest city from an other one (x km)
-function getCloseCity($latitude, $longitude, $cityCode, $distance) {
+function getCloseCity($latitude, $longitude, $cityCode) {
     $km = 0.015060; // Valeur en degré d'un km
-    $ecart = $km * $distance; // ecart entre les villes en degré
+    $ecart = $km * getConfigFile()["rayon_ville"]; // ecart entre les villes en degré
 
 
     $db = connexionBD();
@@ -112,7 +112,7 @@ function getCloseCity($latitude, $longitude, $cityCode, $distance) {
     $response->execute();
 
     if ($response->rowCount() > 0) {
-        $retour = getCloseCityInfo($response, $latitude, $longitude, $distance);
+        $retour = getCloseCityInfo($response, $latitude, $longitude);
     }
     $response->closeCursor();
     return isset($retour) ? $retour : $retour;
@@ -122,8 +122,8 @@ function getCloseCity($latitude, $longitude, $cityCode, $distance) {
  * Renvoie un tableau de villes exploitables avec les distances
  * @param stmt $response La réponse de la base de données
  */
-function getCloseCityInfo($response, $latitude, $longitude, $distance) {
-
+function getCloseCityInfo($response, $latitude, $longitude) {
+    $distance = getConfigFile()["rayon_ville"];
     $i = 0; // Compteur de ville pour le département
 
     $returnArray = array();
@@ -170,7 +170,7 @@ function getCityListFromStatement($response) {
     $returnArray = array();
     $i = 0;
     while ($row = $response->fetch()) {
-        $returnArray[$i] = extractCityInfoFromARow($row);
+        $returnArray[$i++] = extractCityInfoFromARow($row);
     }
     return $returnArray;
 }
@@ -212,7 +212,10 @@ function convertCityListToArray($list) {
 }
 
 // Retourne une liste de n villes comprises entre pop-marge et pop+marge
-function getSameSizeCity($cityCode, $marge, $nb) {
+function getSameSizeCity($cityCode) {
+    $marge = getConfigFile()["population_coeff"];
+    $nb = getConfigFile()["nombre_ville_pop"];
+
 // check city
     $info = getCityInfo($cityCode);
     if (count($info) <= 0 || $nb <= 0 || $marge < 0 ||
@@ -265,7 +268,7 @@ function getSameSizeCity($cityCode, $marge, $nb) {
 					 AND D3.num_departement = V3.ville_departement
 					 AND R3.num_region = :region
                                          AND ville_statut = 'A'
-                     AND ville_id <> :id
+                                         AND ville_id <> :id
 					 AND ville_population_2010 BETWEEN :popMin AND :popMax)
 		         LIMIT :number)
              )
@@ -392,7 +395,8 @@ function getDepartementInfo($codeDep) {
 }
 
 // Retourne les informations des n plus grandes communes d'un département
-function getBiggestCityOfDep($codeDep, $nb) {
+function getBiggestCityOfDep($codeDep) {
+    $nb = getConfigFile()["nb_grande_ville_dep"];
     if ($nb <= 0) {
         return null;
     }

@@ -3,11 +3,6 @@
     <?php
 //important des functions
     require_once ("ressources/core.php");
-    define("DISTANCE", 10); // Distance entre deux villes proches
-    define("NB_IMAGE", 5); // Nombre d'images maxi à afficher
-    define("MARGE_POP", 0.2); // Marge à partir de laquelle on considère une ville
-    // comme voisine
-    define("NB_VILLE", 5); // Nombre de villes à afficher dans villes de même taille
 // check city ID
     $ville_id = filter_input(INPUT_GET, 'code', FILTER_VALIDATE_INT);
     if ($ville_id) {
@@ -110,18 +105,17 @@
     echo "<div class='deux-colonnes'>";
 // List closest city
     $closestCity = getCloseCity($city_informations['latitude'],
-        $city_informations['longitude'], $ville_id, DISTANCE);
+        $city_informations['longitude'], $ville_id);
 
     if (count($closestCity) > 0) {
         echo "<div class='colonne'>";
-        displayCity("Villes voisines à moins de " . DISTANCE . " km",
-            "ville.php", $closestCity);
+        displayCity("Villes voisines à moins de " . getConfigFile()["rayon_ville"] . " km", "ville.php", $closestCity);
         echo "</div>";
     }
 
     echo "<div class='colonne'>";
     displayCity("Villes de même taille", "ville.php",
-        getSameSizeCity($ville_id, MARGE_POP, NB_VILLE));
+        getSameSizeCity($ville_id));
     echo "</div>";
     echo "</div>"
     ?>
