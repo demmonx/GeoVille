@@ -1,14 +1,15 @@
 <?php
 
-function getRootPath() {
-    $path = getcwd();
-    if (strstr($path, "/admin"))
-            $path = substr($path, 0, strlen($path) - strlen("/admin"));
-    return $path;
+// Chargement du fichier de config situé au bon endroit
+if (!@include_once("ressources/function_config.inc.php")) {
+    if (!@include_once("../ressources/function_config.inc.php")) {
+        die("Impossible de charger les ressources");
+    }
 }
 
 /*
  * Recherche de tous les fichiers de fonction disponibles
+ * Importation de ceux qui ne sont pas déjà présents
  */
 foreach (scandir(getRootPath() . '/ressources') as $filename) {
     $path = getRootPath() . "/ressources/" . $filename;
@@ -17,11 +18,4 @@ foreach (scandir(getRootPath() . '/ressources') as $filename) {
         require_once $path;
     }
 }
-/*
-require "ressources/function.inc.php";
-require "ressources/function_config.inc.php";
-require "ressources/function_picture.inc.php";
-require "ressources/function_search_engine.inc.php";
-require "ressources/function_ville.inc.php";
-require "ressources/function_wiki.inc.php";*/
 
