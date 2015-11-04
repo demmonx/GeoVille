@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -11,7 +11,8 @@ function wd_remove_accents($str, $charset = 'utf-8') {
     $str1 = htmlentities($str, ENT_NOQUOTES, $charset);
 
     $str2 = preg_replace(
-            '#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str1);
+        '#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#',
+        '\1', $str1);
     $str3 = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str2);
     $str4 = preg_replace('#&[^;]+;#', '', $str3); // supprime les autres
 // caractères
@@ -71,6 +72,14 @@ function login($pseudo, $pass) {
     return $retour;
 }
 
+/**
+ * Vérifie si la connexion est valide ou pas
+ * @param array $tab Tableau des valeurs à regarder
+ */
+function loginOk($tab) {
+    return isset($tab['name']) && $tab['name'] != null;
+}
+
 // Original PHP code by Chirp Internet: www.chirp.com.au
 // Please acknowledge use of this code by including this header.
 function better_crypt($input, $rounds = 10) {
@@ -79,4 +88,3 @@ function better_crypt($input, $rounds = 10) {
     );
     return password_hash($input, PASSWORD_BCRYPT, $crypt_options);
 }
-

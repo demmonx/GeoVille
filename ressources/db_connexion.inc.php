@@ -22,6 +22,7 @@ function connexionBDAdmin() {
  * @return stmt La connexion active ou null à la bd
  */
 function connexion($user, $pass) {
+    print($user);
     try {
         $db = new PDO(getChaineConnexion(), $user, $pass);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

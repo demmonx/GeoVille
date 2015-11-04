@@ -4,7 +4,7 @@ session_start();
 require_once ("../ressources/core.php");
 
 // if user is not logged
-if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
+if (!loginOk($_SESSION)) {
     exit("Vous devez vous connecter pour accéder à cette partie.");
 }
 define("NB_COL", 4);

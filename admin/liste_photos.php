@@ -4,7 +4,7 @@
 require_once ("../ressources/core.php");
 
 // If user isn't logged
-if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
+if (!loginOk($_SESSION)) {
     exit("<p>Vous devez vous connecter pour accéder à cette partie.</p>");
 }
 

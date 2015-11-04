@@ -6,7 +6,7 @@ require_once ("../ressources/header.php");
 require_once ("../ressources/core.php");
 
 // If user isn't logged
-if (!(isset($_SESSION['name']) && $_SESSION['name'] != null)) {
+if (!loginOk($_SESSION)) {
     header("refresh:5;url=login.php");
     exit("<p>Vous devez vous connecter pour accéder à cette partie.<br />
     Vous serez redirigé automatiquement vers la page de connexion dans 5 secondes.<br />
