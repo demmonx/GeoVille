@@ -5,7 +5,7 @@ require_once ("../ressources/core.php");
 
 // If user isn't logged
 if (!loginOk($_SESSION)) {
-    exit("<p>Vous devez vous connecter pour accéder à cette partie.</p>");
+    exit("Vous devez vous connecter pour accéder à cette partie.");
 }
 
 // check city ID

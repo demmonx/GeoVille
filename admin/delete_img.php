@@ -9,12 +9,12 @@ if ($codePicture) {
     $picture_info = getPictureInfo($codePicture);
 }
 if (!(isset($picture_info) && count($picture_info) > 0)) {
-    exit("<p class='error'>Pas de photos pour la ville</p>");
+    exit("La photo n'existe pas");
 }
 
 // If user isn't logged
 if (!loginOk($_SESSION)) {
-    exit("<p>Vous devez vous connecter pour accéder à cette partie.<br />");
+    exit("Vous devez vous connecter pour accéder à cette partie.");
 }
 // if file doesn't exist
 if (!file_exists($picture_info['path'])) {
@@ -25,4 +25,4 @@ if (!file_exists($picture_info['path'])) {
 unlink($picture_info['path']);
 
 // remove file in BD
-removePictureFromBD($codePicture) ? "Suppression réussie" : "Echec de suppression";
+echo removePictureFromBD($codePicture) ? "Suppression réussie" : "Echec de suppression";

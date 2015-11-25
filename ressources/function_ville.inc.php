@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 // Get basic information about a city (return empty array if no data extracted
 // from SQL request)
 function getCityInfo($cityCode) {
@@ -39,9 +36,6 @@ function getCityInfo($cityCode) {
 function getCodeDepartementRegex() {
     return "/^([0-9])?([0-9A-B])?([0-9]){0,1}$/";
 }
-
-
-
 
 // Return a short description about the city from database
 function getDescriptionFromDB($cityCode) {
@@ -81,38 +75,35 @@ function getCityDescription($cityName, $cityID) {
     return $message;
 }
 
-
 // Get closest city from an other one (x km)
 function getCloseCity($latitude, $longitude, $cityCode) {
-    $km = 0.015060; // Valeur en degré d'un km
-    $ecart = $km * getConfigFile()["rayon_ville"]; // ecart entre les villes en degré
+    $ecart = getConfigFile()["rayon_ville"]; // ecart entre les villes en degré
 
 
     $db = connexionBD();
+    $formule = "(6366*acos(cos(radians(:lat))*cos(radians(ville_latitude_deg))*cos(radians(ville_longitude_deg) -radians(:long))+sin(radians(:lat))*sin(radians(ville_latitude_deg))))";
 
-    $sql = "SELECT *
+    $sql = "SELECT *, " . $formule . " AS dist
 		FROM villes_france_free V, departements D, regions R
-		WHERE ville_id <> ?
+		WHERE ville_id <> :id
                                     AND ville_statut = 'A'
-		AND ville_latitude_deg BETWEEN ? AND ?
-		AND ville_longitude_deg BETWEEN ? AND ?
+		AND " . $formule . " <= :dist
 	                  AND ville_departement = num_departement
 		AND D.num_region = R.num_region
-		ORDER BY nom_r, num_departement, ville_nom";
+		ORDER BY nom_r, num_departement,  dist";
 
     $response = $db->prepare($sql);
 
 // Change ? into the correct value
-    $response->bindValue(1, $cityCode, PDO::PARAM_INT);
-    $response->bindValue(2, $latitude - $ecart, PDO::PARAM_INT);
-    $response->bindValue(3, $latitude + $ecart, PDO::PARAM_INT);
-    $response->bindValue(4, $longitude - $ecart, PDO::PARAM_INT);
-    $response->bindValue(5, $longitude + $ecart, PDO::PARAM_INT);
+    $response->bindValue(':id', $cityCode, PDO::PARAM_INT);
+    $response->bindValue(':lat', $latitude, PDO::PARAM_INT);
+    $response->bindValue(':long', $longitude, PDO::PARAM_INT);
+    $response->bindValue(':dist', $ecart, PDO::PARAM_INT);
 
     $response->execute();
 
     if ($response->rowCount() > 0) {
-        $retour = getCloseCityInfo($response, $latitude, $longitude);
+        $retour = getCloseCityInfo($response);
     }
     $response->closeCursor();
     return isset($retour) ? $retour : $retour;
@@ -122,20 +113,14 @@ function getCloseCity($latitude, $longitude, $cityCode) {
  * Renvoie un tableau de villes exploitables avec les distances
  * @param stmt $response La réponse de la base de données
  */
-function getCloseCityInfo($response, $latitude, $longitude) {
-    $distance = getConfigFile()["rayon_ville"];
+function getCloseCityInfo($response) {
+    $nb = getConfigFile()["nombre_ville_dist"];
     $i = 0; // Compteur de ville pour le département
 
     $returnArray = array();
-    while ($row = $response->fetch()) {
-
-        $size = distance($latitude, $longitude, $row["ville_latitude_deg"],
-            $row["ville_longitude_deg"]); // Get exact distance between city
-        if ($size == 0 || $size > $distance) { // If distance is higher
-            continue;
-        }
+    while (($row = $response->fetch()) && $i < $nb) {
         $returnArray[$i] = extractCityInfoFromARow($row);
-        $returnArray[$i]['distance'] = $size;
+        $returnArray[$i]['distance'] = $row['dist'];
         $i ++;
     }
     return $returnArray;
@@ -162,7 +147,7 @@ function getCity($sqlRq) {
 }
 
 // Convertit un curseur de base de données en tableau de ville
-function getCityListFromStatement($response) {
+function getCityListFromStatement($response, $nb = -1) {
     if ($response == null || $response->rowCount() <= 0) {
         return null;
     }
@@ -327,8 +312,6 @@ function updateCity($cityCode, $param) {
     return $stmt->execute();
 }
 
-
-
 /**
  * Vérifie si une ville existe dans la base de donnée ou pas
  *
@@ -356,7 +339,6 @@ function checkCity($cityCode) {
     $response->closeCursor();
     return true;
 }
-
 
 // Retourne les informations du département : population, superficie, densite,
 // nom et code
@@ -408,8 +390,7 @@ function getBiggestCityOfDep($codeDep) {
 		AND R.num_region = D.num_region
         AND D.num_departement = V.ville_departement
         AND ville_statut = 'A'
-        ORDER BY ville_population_2010 DESC
-        LIMIT :nombre";
+        ORDER BY ville_population_2010 DESC";
 
     $response = $db->prepare($sql);
 
@@ -421,7 +402,7 @@ function getBiggestCityOfDep($codeDep) {
 
     $i = 0;
     if ($response->rowCount() > 0) {
-        while ($row = $response->fetch()) {
+        while (($row = $response->fetch()) && $i < $nb) {
             $returnArray[$i ++] = extractCityInfoFromARow($row);
         }
     } // else NO DATA FOUND

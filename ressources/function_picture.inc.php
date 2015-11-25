@@ -258,7 +258,6 @@ function picByCityAndRank($cityCode, $pictureRang, $sens) {
         $sql .= "AND rang < :rang "
             . " ORDER BY rang DESC ";
     }
-    $sql .= "LIMIT 1";
 
     $response = $db->prepare($sql);
 
@@ -269,7 +268,7 @@ function picByCityAndRank($cityCode, $pictureRang, $sens) {
     $response->execute();
 
 // Picture doesn't exist
-    $id = $response->rowCount() == 1 ? $response->fetch()["photo_id"] : null;
+    $id = $response->rowCount() > 0 ? $response->fetch()["photo_id"] : null;
 
     return getPictureInfo($id);
 }

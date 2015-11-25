@@ -24,7 +24,7 @@ if ($codePicture) {
 }
 
 if (!(isset($picture_info) && count($picture_info) > 0)) {
-    exit("<p class='error'>Pas de photos pour la ville</p>");
+    exit("Photo non trouvée");
 }
 
 

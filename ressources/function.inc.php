@@ -88,3 +88,64 @@ function better_crypt($input, $rounds = 10) {
     );
     return password_hash($input, PASSWORD_BCRYPT, $crypt_options);
 }
+
+/**
+ * Ajoute un fichier sur le serveur
+ *
+ * @param String $basedir
+ *            Repertoire dans lequel ajouté le fichier
+ * @param String $prefix
+ *            Prefixe à ajouter au fichier
+ * @param array $format
+ *            Format de fichiers autorisés
+ * @param array $file
+ *            Le fichier à upload
+ */
+function upload_file($basedir, $format, $file, $prefix = "",
+    $poids_max = 1000000) {
+    // nom du fichier choisi:
+    $nomFichier = str_replace(' ', '', $file["name"]);
+    // nom temporaire sur le serveur:
+    $nomTemporaire = str_replace(' ', '', $file["tmp_name"]);
+    // type du fichier choisi:
+    $typeFichier = $file["type"];
+
+    if ($file['size'] > $poids_max) {
+        throw new InvalidArgumentException("L'image doit être inférieur à " . $poids_max
+        / 1024 .
+        "Ko.");
+    }
+
+    // Créé le dossier s'il n'existe pas
+    if (!file_exists($basedir)) {
+        mkdir($basedir, 0777, true);
+    }
+
+    // On préfixe comme il faut
+    if (!empty($prefix)) $prefix = $prefix . "_";
+
+    // Supression des caractères accentués
+    $nom_fichier = strtr(trim($nomFichier),
+        'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
+        'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+
+    $emplacement = $basedir . $prefix . $nom_fichier;
+
+    // Vérification du format de fichier
+    if ($format[array_search($typeFichier, $format)] != $typeFichier) {
+        throw new InvalidArgumentException("Le type de l'image est invalide");
+    }
+
+    // Cas où le fichier est déjà là
+    if (file_exists($emplacement)) {
+        throw new InvalidArgumentException(
+        "Un fichier avec le même nom existe déjà");
+    }
+
+    // Vérification de l'ajout
+    if (move_uploaded_file($nomTemporaire, $emplacement)) {
+        return ($emplacement);
+    } else {
+        throw new Exception("Erreur lors de la création du fichier");
+    }
+}
