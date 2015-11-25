@@ -206,7 +206,7 @@ function extractFromPattern($pattern, $elem) {
         "longitude" => isset($elem["longitude"]) ? $elem["longitude"] : "",
         "path" => isset($elem["path"]) ? $elem["path"] : "",
         "titre" => isset($elem["titre"]) ? $elem["titre"] : "",
-        "id" => isset($elem["id"]) ? $elem["id"] : "",
+        "id_photo" => isset($elem["id"]) ? $elem["id"] : "",
         "rang" => isset($elem["rang"]) ? $elem["rang"] : "",
         "description" => isset($elem["description"]) ? $elem["description"] : "",
         "ville" => isset($elem["ville"]) ? $elem["ville"] : "",
