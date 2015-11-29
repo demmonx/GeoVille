@@ -396,7 +396,6 @@ function getBiggestCityOfDep($codeDep) {
 
 // Change ? into the correct value
     $response->bindValue(':departement', $codeDep, PDO::PARAM_STR);
-    $response->bindValue(':nombre', $nb, PDO::PARAM_INT);
 
     $response->execute();
 
